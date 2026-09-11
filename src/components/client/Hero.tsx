@@ -195,10 +195,10 @@ export default function Hero() {
               {/* Middle title */}
               <div className="my-1 sm:my-2 text-left">
                 <div className="font-heading font-bold text-[11px] xs:text-xs sm:text-sm md:text-base text-foreground leading-snug">
-                  Bespoke Mehndi
+                  Bengali Kolka
                 </div>
                 <div className="text-[9px] sm:text-[11px] text-muted-foreground font-sans mt-0.5">
-                  Bridal Handcraft
+                  Bridal Mehndi
                 </div>
               </div>
 
