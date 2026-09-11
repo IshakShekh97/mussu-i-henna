@@ -1,28 +1,31 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { Menu, ShoppingCart, X } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "motion/react";
-import { ShoppingCart, Menu, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
-import SmoothTab, { TabItem } from "@/components/ui/smooth-tab";
-
-interface NavItem extends TabItem {
+interface NavItem {
+  id: string;
   name: string;
   href: string;
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { id: "/", title: "Home", name: "Home", href: "/" },
-  { id: "/shop", title: "Shop", name: "Shop", href: "/shop" },
-  { id: "/booking", title: "Booking", name: "Booking", href: "/booking" },
+  { id: "/", name: "Home", href: "/" },
+  { id: "/shop", name: "Shop", href: "/shop" },
+  { id: "/booking", name: "Booking", href: "/booking" },
   {
     id: "/track-order",
-    title: "Track Order",
     name: "Track Order",
     href: "/track-order",
+  },
+  {
+    id: "/registration",
+    name: "Registration",
+    href: "/registration",
   },
 ];
 
@@ -33,15 +36,60 @@ interface NavbarProps {
 
 export default function Navbar({ cartCount = 0, onCartClick }: NavbarProps) {
   const pathname = usePathname();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const headerRef = useRef<HTMLElement>(null);
 
-  const activeTabId =
+  const routeActiveTabId =
     NAV_ITEMS.find(
       (item) =>
         pathname === item.href ||
         (item.href !== "/" && pathname.startsWith(item.href)),
     )?.id ?? "/";
+
+  const [activeTabId, setActiveTabId] = useState(routeActiveTabId);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+  const navContainerRef = useRef<HTMLDivElement>(null);
+  const tabRefs = useRef<Map<string, HTMLAnchorElement>>(new Map());
+  const [pillStyle, setPillStyle] = useState<{
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+  } | null>(null);
+
+  // Sync active tab if route changes (e.g. browser back/forward)
+  useEffect(() => {
+    setActiveTabId(routeActiveTabId);
+  }, [routeActiveTabId]);
+
+  // Keep pill positioned over the active tab, immune to window scroll
+  useEffect(() => {
+    const updatePill = () => {
+      const activeEl = tabRefs.current.get(activeTabId);
+      if (activeEl) {
+        setPillStyle({
+          left: activeEl.offsetLeft,
+          top: activeEl.offsetTop,
+          width: activeEl.offsetWidth,
+          height: activeEl.offsetHeight,
+        });
+      }
+    };
+
+    updatePill();
+    window.addEventListener("resize", updatePill);
+
+    const container = navContainerRef.current;
+    let resizeObserver: ResizeObserver | null = null;
+    if (container && typeof ResizeObserver !== "undefined") {
+      resizeObserver = new ResizeObserver(updatePill);
+      resizeObserver.observe(container);
+    }
+
+    return () => {
+      window.removeEventListener("resize", updatePill);
+      resizeObserver?.disconnect();
+    };
+  }, [activeTabId]);
 
   // Close mobile menu on click outside or escape key
   useEffect(() => {
@@ -110,14 +158,60 @@ export default function Navbar({ cartCount = 0, onCartClick }: NavbarProps) {
 
         {/* Right Islands: Navigation Pill + Action Pill */}
         <div className="flex items-center gap-3 sm:gap-3.5">
-          {/* Middle Island: Desktop Navigation Pill with SmoothTab */}
+          {/* Middle Island: Desktop Navigation Pill */}
           <div className="hidden md:block">
-            <SmoothTab
-              items={NAV_ITEMS}
-              selectedId={activeTabId}
-              showCardContent={false}
-              activeColor="bg-primary"
-            />
+            <div
+              ref={navContainerRef}
+              className="relative flex items-center gap-2 p-1.5 rounded-full bg-black/5 border border-border/50 backdrop-blur-xl w-fit"
+            >
+              {/* Animated Sliding Pill (Immune to scroll jumps) */}
+              {pillStyle && (
+                <motion.div
+                  className="absolute rounded-full bg-foreground shadow-sm pointer-events-none"
+                  initial={false}
+                  animate={{
+                    x: pillStyle.left,
+                    y: pillStyle.top,
+                    width: pillStyle.width,
+                    height: pillStyle.height,
+                  }}
+                  style={{
+                    top: 0,
+                    left: 0,
+                  }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 380,
+                    damping: 30,
+                  }}
+                />
+              )}
+
+              {NAV_ITEMS.map((item) => {
+                const isActive = activeTabId === item.id;
+                return (
+                  <Link
+                    key={item.id}
+                    href={item.href}
+                    ref={(el) => {
+                      if (el) tabRefs.current.set(item.id, el);
+                      else tabRefs.current.delete(item.id);
+                    }}
+                    onClick={() => setActiveTabId(item.id)}
+                    className={`relative px-4 sm:px-5 py-2 text-xs sm:text-sm font-medium rounded-full transition-colors duration-200 cursor-pointer ${
+                      isActive
+                        ? "text-background font-semibold"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {isActive && !pillStyle && (
+                      <div className="absolute inset-0 rounded-full bg-foreground shadow-sm" />
+                    )}
+                    <span className="relative z-10">{item.name}</span>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
 
           {/* Right Island: Cart Button Pill */}
