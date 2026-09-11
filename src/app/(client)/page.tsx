@@ -1,12 +1,12 @@
-import Hero from "@/components/client/Home";
+import Hero from "@/components/client/Hero";
+import ProductsSection from "@/components/client/ProductsSection";
 
 const HomePage = () => {
   return (
-    <div>
-      <div className="relative z-10">
-        <Hero />
-      </div>
-    </div>
+    <main className="relative w-full overflow-hidden">
+      <Hero />
+      <ProductsSection />
+    </main>
   );
 };
 

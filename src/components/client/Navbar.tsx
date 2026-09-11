@@ -1,22 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { ShoppingCart, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface NavItem {
+import SmoothTab, { TabItem } from "@/components/ui/smooth-tab";
+
+interface NavItem extends TabItem {
   name: string;
   href: string;
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { name: "Home", href: "/" },
-  { name: "Shop", href: "/shop" },
-  { name: "Booking", href: "/booking" },
-  { name: "Track Order", href: "/track-order" },
+  { id: "/", title: "Home", name: "Home", href: "/" },
+  { id: "/shop", title: "Shop", name: "Shop", href: "/shop" },
+  { id: "/booking", title: "Booking", name: "Booking", href: "/booking" },
+  {
+    id: "/track-order",
+    title: "Track Order",
+    name: "Track Order",
+    href: "/track-order",
+  },
 ];
 
 interface NavbarProps {
@@ -26,11 +33,56 @@ interface NavbarProps {
 
 export default function Navbar({ cartCount = 0, onCartClick }: NavbarProps) {
   const pathname = usePathname();
-  const [hoveredPath, setHoveredPath] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+
+  const activeTabId =
+    NAV_ITEMS.find(
+      (item) =>
+        pathname === item.href ||
+        (item.href !== "/" && pathname.startsWith(item.href)),
+    )?.id ?? "/";
+
+  // Close mobile menu on click outside or escape key
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (
+        headerRef.current &&
+        !headerRef.current.contains(event.target as Node)
+      ) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [mobileMenuOpen]);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    if (pathname) {
+      setMobileMenuOpen(false);
+    }
+  }, [pathname]);
 
   return (
     <motion.header
+      ref={headerRef}
       initial={{ y: -24, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
@@ -58,61 +110,15 @@ export default function Navbar({ cartCount = 0, onCartClick }: NavbarProps) {
 
         {/* Right Islands: Navigation Pill + Action Pill */}
         <div className="flex items-center gap-3 sm:gap-3.5">
-          {/* Middle Island: Desktop Navigation Pill */}
-          <nav
-            aria-label="Main Navigation"
-            className="hidden md:flex gap-2 items-center rounded-full border border-border/70 bg-card/85 p-1.5 shadow-[0_2px_12px_rgba(0,0,0,0.04)] backdrop-blur-md"
-            onMouseLeave={() => setHoveredPath(null)}
-          >
-            {NAV_ITEMS.map((item) => {
-              const isActive =
-                pathname === item.href ||
-                (item.href !== "/" && pathname.startsWith(item.href));
-
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onMouseEnter={() => setHoveredPath(item.href)}
-                  className={cn(
-                    "relative px-4 sm:px-5 py-1.5 sm:py-2 text-sm font-medium transition-colors duration-200 select-none",
-                    isActive
-                      ? "text-primary-foreground font-semibold"
-                      : "text-foreground/75 hover:text-foreground",
-                  )}
-                >
-                  {/* Sliding Active Pill Indicator */}
-                  {isActive && (
-                    <motion.div
-                      layoutId="active-pill"
-                      className="absolute inset-0 rounded-full bg-primary shadow-xs"
-                      transition={{
-                        type: "spring",
-                        stiffness: 380,
-                        damping: 30,
-                      }}
-                    />
-                  )}
-
-                  {/* Subtle Hover Highlight (only on inactive tabs) */}
-                  {!isActive && hoveredPath === item.href && (
-                    <motion.div
-                      layoutId="hover-pill"
-                      className="absolute inset-0 rounded-full bg-muted/60"
-                      transition={{
-                        type: "spring",
-                        stiffness: 400,
-                        damping: 35,
-                      }}
-                    />
-                  )}
-
-                  {/* Label Text */}
-                  <span className="relative z-10">{item.name}</span>
-                </Link>
-              );
-            })}
-          </nav>
+          {/* Middle Island: Desktop Navigation Pill with SmoothTab */}
+          <div className="hidden md:block">
+            <SmoothTab
+              items={NAV_ITEMS}
+              selectedId={activeTabId}
+              showCardContent={false}
+              activeColor="bg-primary"
+            />
+          </div>
 
           {/* Right Island: Cart Button Pill */}
           <motion.button
@@ -160,15 +166,15 @@ export default function Navbar({ cartCount = 0, onCartClick }: NavbarProps) {
         </div>
       </div>
 
-      {/* Mobile Animated Dropdown Island */}
+      {/* Mobile Animated Floating Dropdown Island */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -12, scale: 0.98 }}
+            initial={{ opacity: 0, y: -10, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.98 }}
+            exit={{ opacity: 0, y: -8, scale: 0.98 }}
             transition={{ type: "spring", stiffness: 350, damping: 28 }}
-            className="mx-auto mt-3 max-w-7xl md:hidden overflow-hidden rounded-2xl border border-border/70 bg-card/95 p-2 shadow-xl backdrop-blur-xl"
+            className="absolute left-4 right-4 sm:left-6 sm:right-6 top-full mt-2.5 md:hidden overflow-hidden rounded-2xl border border-border/70 bg-card/95 p-2 shadow-2xl backdrop-blur-xl"
           >
             <div className="flex flex-col gap-1">
               {NAV_ITEMS.map((item) => {
