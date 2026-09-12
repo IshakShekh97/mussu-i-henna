@@ -1,15 +1,16 @@
 "use client";
 
-import React, { useRef, useEffect, useLayoutEffect, useState } from "react";
 import {
   motion,
+  useAnimationFrame,
+  useMotionValue,
   useScroll,
   useSpring,
   useTransform,
-  useMotionValue,
   useVelocity,
-  useAnimationFrame,
 } from "motion/react";
+import type React from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -128,7 +129,7 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
     });
 
     const directionFactor = useRef<number>(1);
-    useAnimationFrame((t, delta) => {
+    useAnimationFrame((_t, delta) => {
       let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
 
       if (velocityFactor.get() < 0) {
@@ -146,7 +147,7 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
       spans.push(
         <span
           className={`flex-shrink-0 inline-flex items-center ${className}`}
-          key={i}
+          key={`velocity-copy-${i}`}
           ref={i === 0 ? copyRef : null}
         >
           {children}&nbsp;
@@ -174,24 +175,30 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
 
   return (
     <div className="w-full overflow-hidden select-none">
-      {texts.map((text, index) => (
-        <VelocityText
-          key={index}
-          className={className}
-          baseVelocity={index % 2 !== 0 ? -velocity : velocity}
-          scrollContainerRef={scrollContainerRef}
-          damping={damping}
-          stiffness={stiffness}
-          numCopies={numCopies}
-          velocityMapping={velocityMapping}
-          parallaxClassName={parallaxClassName}
-          scrollerClassName={scrollerClassName}
-          parallaxStyle={parallaxStyle}
-          scrollerStyle={scrollerStyle}
-        >
-          {text}
-        </VelocityText>
-      ))}
+      {texts.map((text, index) => {
+        const textKey =
+          typeof text === "string"
+            ? `${text.slice(0, 20)}-${index}`
+            : `velocity-row-${index}`;
+        return (
+          <VelocityText
+            key={textKey}
+            className={className}
+            baseVelocity={index % 2 !== 0 ? -velocity : velocity}
+            scrollContainerRef={scrollContainerRef}
+            damping={damping}
+            stiffness={stiffness}
+            numCopies={numCopies}
+            velocityMapping={velocityMapping}
+            parallaxClassName={parallaxClassName}
+            scrollerClassName={scrollerClassName}
+            parallaxStyle={parallaxStyle}
+            scrollerStyle={scrollerStyle}
+          >
+            {text}
+          </VelocityText>
+        );
+      })}
     </div>
   );
 };

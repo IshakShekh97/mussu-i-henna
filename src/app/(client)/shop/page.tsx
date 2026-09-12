@@ -1,19 +1,12 @@
 "use client";
 
-import {
-  ArrowLeft,
-  ArrowRight,
-  Check,
-  Filter,
-  Search,
-  Sparkles,
-  Star,
-} from "lucide-react";
+import { ArrowLeft, Filter, Search, Sparkles } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import CartToast from "@/components/client/CartToast";
 import ProductCard from "@/components/client/ProductCard";
+import QuickViewModal from "@/components/client/QuickViewModal";
 import { CATEGORIES, PRODUCTS, type Product } from "@/data/products";
 
 export default function ShopPage() {
@@ -174,114 +167,13 @@ export default function ShopPage() {
         </div>
       )}
 
-      {/* ── Interactive Quick View Modal ── */}
-      <AnimatePresence>
-        {selectedProduct && (
-          <div
-            role="dialog"
-            aria-modal="true"
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-md"
-            onClick={() => setSelectedProduct(null)}
-            onKeyDown={(e) => {
-              if (e.key === "Escape") setSelectedProduct(null);
-            }}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-lg rounded-[2.5rem] bg-card/95 border border-border/60 p-6 sm:p-8 shadow-2xl backdrop-blur-2xl flex flex-col"
-            >
-              <button
-                type="button"
-                onClick={() => setSelectedProduct(null)}
-                aria-label="Close dialog"
-                className="absolute top-5 right-5 size-9 rounded-full bg-black/5  flex items-center justify-center text-foreground/70 hover:text-foreground hover:scale-105 transition-all cursor-pointer"
-              >
-                ✕
-              </button>
-
-              <div className="flex items-center gap-2 mb-4">
-                {selectedProduct.badges.map((b) => (
-                  <span
-                    key={b}
-                    className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold"
-                  >
-                    {b}
-                  </span>
-                ))}
-              </div>
-
-              <div className="relative w-full h-64 my-2 flex items-center justify-center">
-                <Image
-                  src={selectedProduct.image}
-                  alt={selectedProduct.name}
-                  fill
-                  className="object-contain drop-shadow-[0_20px_35px_rgba(0,0,0,0.15)]"
-                />
-              </div>
-
-              <div className="mt-4">
-                <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
-                  <div className="flex items-center text-amber-500">
-                    <Star className="size-3.5 fill-amber-500 text-amber-500" />
-                    <span className="ml-1 font-semibold text-foreground">
-                      {selectedProduct.rating}
-                    </span>
-                  </div>
-                  <span>•</span>
-                  <span>{selectedProduct.reviewsCount} customer reviews</span>
-                </div>
-                <h3 className="text-2xl font-black text-foreground">
-                  {selectedProduct.name}
-                </h3>
-                <p className="text-sm text-muted-foreground mt-2 font-sans leading-relaxed">
-                  {selectedProduct.description}
-                </p>
-              </div>
-
-              <div className="flex items-center justify-between mt-6 pt-4 border-t border-border/50">
-                <span className="text-3xl font-black text-foreground">
-                  {selectedProduct.price}
-                </span>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    handleAddToCart(selectedProduct);
-                    setSelectedProduct(null);
-                  }}
-                  className="inline-flex items-center gap-2 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 text-sm font-semibold shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer"
-                >
-                  <span>Add to Bag</span>
-                  <ArrowRight className="size-4" />
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-
-      {/* ── Floating Toast Notification ── */}
-      <AnimatePresence>
-        {toastMessage && (
-          <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.9 }}
-            className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 rounded-full bg-foreground text-background shadow-[0_15px_35px_rgba(0,0,0,0.25)] border border-white/20 backdrop-blur-xl"
-          >
-            <span className="size-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs">
-              <Check className="size-3.5" />
-            </span>
-            <span className="text-xs sm:text-sm font-medium">
-              {toastMessage}
-            </span>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* ── Interactive Quick View Modal & Toast ── */}
+      <QuickViewModal
+        product={selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+        onAddToCart={handleAddToCart}
+      />
+      <CartToast message={toastMessage} />
     </main>
   );
 }

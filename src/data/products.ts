@@ -29,9 +29,9 @@ export const PRODUCTS: Product[] = [
     badges: ["Artisan Batch", "100% Organic"],
     category: "cones",
     image: "/products/henna-cones.png",
-    tagline: "Triple-sifted Rajasthani henna paste with pure Nilgiri eucalyptus oil",
+    tagline: "Triple-sifted henna paste with pure Nilgiri eucalyptus oil",
     description:
-      "Handcrafted for Bengali bridal Kolka work using 100% pure organic Rajasthani henna powder, pure eucalyptus oil, and cane sugar syrup for a silky smooth flow and rich mahogany stain that lasts up to 2 weeks.",
+      "Handcrafted for Bengali bridal Kolka work using 100% pure organic henna powder, pure eucalyptus oil, and cane sugar syrup for a silky smooth flow and rich mahogany stain that lasts up to 2 weeks.",
     rating: 4.9,
     reviewsCount: 142,
     isFeatured: true,
@@ -88,7 +88,8 @@ export const PRODUCTS: Product[] = [
     badges: ["Artisan Tool", "Ultra Fine"],
     category: "cones",
     image: "/products/henna-cones.png",
-    tagline: "Micro-pinhole cones engineered for intricate bridal lace & Kolka paisleys",
+    tagline:
+      "Micro-pinhole cones engineered for intricate bridal lace & Kolka paisleys",
     description:
       "Laser-cut ultra-fine tips calibrated specifically for microscopic line work, intricate netting, Kolka curves, and delicate floral shading without hand fatigue.",
     rating: 4.8,
@@ -117,7 +118,8 @@ export const PRODUCTS: Product[] = [
     badges: ["Signature", "Limited Batch"],
     category: "kits",
     image: "/products/bridal-kit.png",
-    tagline: "Handcrafted collector's gift trunk for grand Bengali wedding celebrations",
+    tagline:
+      "Handcrafted collector's gift trunk for grand Bengali wedding celebrations",
     description:
       "An heirloom-worthy wooden trunk wrapped in artisan cloth containing 12 fresh cones, 2 jars of aftercare balm, applicator accessories, and golden sealing ribbons for Gaye Holud and Biye ceremonies.",
     rating: 5.0,
@@ -133,7 +135,7 @@ export const PRODUCTS: Product[] = [
     image: "/products/henna-cones.png",
     tagline: "First flush autumn harvest henna with unmatched dye release",
     description:
-      "Single-estate Rajasthani henna paste from the peak November crop yield, offering exceptional elasticity and a deep burgundy dye curve.",
+      "Single-estate henna paste from the peak November crop yield, offering exceptional elasticity and a deep burgundy dye curve.",
     rating: 4.8,
     reviewsCount: 37,
     isFeatured: false,

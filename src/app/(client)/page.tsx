@@ -1,7 +1,7 @@
-import ScrollVelocity from "@/components/ScrollVelocity";
 import Hero from "@/components/client/Hero";
 import ProductsSection from "@/components/client/ProductsSection";
 import ServicesSection from "@/components/client/ServicesSection";
+import ScrollVelocity from "@/components/ScrollVelocity";
 
 const HomePage = () => {
   return (
@@ -9,7 +9,7 @@ const HomePage = () => {
       <Hero />
       <ScrollVelocity
         texts={[
-          "✦ 100% RAJASTHANI SOJAT CROP ✦ ZERO CHEMICALS OR PPD ✦ PURE STEAM-DISTILLED NILGIRI OILS ✦ 48-HOUR MAHOGANY STAIN ✦ HANDMADE IN FRESH BATCHES ✦ HYPOALLERGENIC & PREGNANCY SAFE",
+          "✦ ZERO CHEMICALS OR PPD ✦ PURE STEAM-DISTILLED NILGIRI OILS ✦ 48-HOUR MAHOGANY STAIN ✦ HANDMADE IN FRESH BATCHES ✦ HYPOALLERGENIC & PREGNANCY SAFE",
         ]}
         velocity={50}
         className="fill-primary text-3xl font-heading font-bold tracking-widest uppercase mt-20"

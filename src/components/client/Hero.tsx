@@ -1,7 +1,13 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useScroll, useTransform } from "motion/react";
-import { Sparkles, Star, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Sparkles, Star } from "lucide-react";
+import {
+  motion,
+  useMotionValue,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
@@ -60,22 +66,26 @@ export default function Hero() {
     offset: ["start start", "end start"],
   });
 
-  // Scroll-linked transforms: closing when scrolling past, reversing when scrolling back
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.65, 0.95], [1, 0.45, 0]);
-  const heroScale = useTransform(scrollYProgress, [0, 0.75, 1], [1, 0.94, 0.88]);
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  // Scroll-linked transforms: cleanly disappears as you scroll away, smoothly re-animates when returning
+  const heroOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.35, 0.72],
+    [1, 0.4, 0],
+  );
+  const heroScale = useTransform(scrollYProgress, [0, 0.72], [1, 0.92]);
+  const heroY = useTransform(scrollYProgress, [0, 0.72], [0, -60]);
 
   // Coordinated closing element motion
-  const topTextY = useTransform(scrollYProgress, [0, 0.85], [0, -60]);
-  const bottomTextY = useTransform(scrollYProgress, [0, 0.85], [0, 50]);
-  const leftCardX = useTransform(scrollYProgress, [0, 0.8], [0, -80]);
-  const leftCardOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
-  const rightCardX = useTransform(scrollYProgress, [0, 0.8], [0, 80]);
-  const rightCardOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
-  const handScrollY = useTransform(scrollYProgress, [0, 0.85], [0, 95]);
-  const handScrollScale = useTransform(scrollYProgress, [0, 0.85], [1, 0.92]);
-  const ctaOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const ctaY = useTransform(scrollYProgress, [0, 0.5], [0, 20]);
+  const topTextY = useTransform(scrollYProgress, [0, 0.65], [0, -50]);
+  const bottomTextY = useTransform(scrollYProgress, [0, 0.65], [0, 40]);
+  const leftCardX = useTransform(scrollYProgress, [0, 0.55], [0, -70]);
+  const leftCardOpacity = useTransform(scrollYProgress, [0, 0.45], [1, 0]);
+  const rightCardX = useTransform(scrollYProgress, [0, 0.55], [0, 70]);
+  const rightCardOpacity = useTransform(scrollYProgress, [0, 0.45], [1, 0]);
+  const handScrollY = useTransform(scrollYProgress, [0, 0.65], [0, 80]);
+  const handScrollScale = useTransform(scrollYProgress, [0, 0.65], [1, 0.92]);
+  const ctaOpacity = useTransform(scrollYProgress, [0, 0.35], [1, 0]);
+  const ctaY = useTransform(scrollYProgress, [0, 0.35], [0, 20]);
 
   return (
     <section
@@ -252,7 +262,7 @@ export default function Hero() {
                   Rich Stain
                 </div>
                 <div className="text-[9px] sm:text-[11px] text-muted-foreground font-sans mt-0.5">
-                  Sojat Rajasthani
+                  Colors
                 </div>
               </div>
 

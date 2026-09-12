@@ -6,9 +6,9 @@ import {
   Playfair_Display,
 } from "next/font/google";
 import "./globals.css";
-import { cn } from "@/lib/utils";
-import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import Navbar from "@/components/client/Navbar";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { cn } from "@/lib/utils";
 
 const playfairDisplayHeading = Playfair_Display({
   subsets: ["latin"],
