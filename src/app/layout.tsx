@@ -7,6 +7,7 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/client/Navbar";
+import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { cn } from "@/lib/utils";
 
@@ -58,8 +59,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
-          <section className="">{children}</section>
+          <SmoothScrollProvider>
+            <Navbar />
+            <section className="">{children}</section>
+          </SmoothScrollProvider>
         </ThemeProvider>
       </body>
     </html>
