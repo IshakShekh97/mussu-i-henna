@@ -2,6 +2,7 @@
 
 import { Menu, ShoppingCart, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -145,14 +146,26 @@ export default function Navbar({ cartCount = 0, onCartClick }: NavbarProps) {
         >
           <Link
             href="/"
-            className="group flex items-center rounded-full border border-border/70 bg-card/85 px-5 py-2 sm:px-6 sm:py-2.5 shadow-[0_2px_12px_rgba(0,0,0,0.04)] backdrop-blur-md transition-all duration-300 hover:border-border hover:shadow-md"
+            className="group flex items-center gap-2.5 rounded-full border border-border/70 bg-card/85 py-1.5 pl-2 pr-4.5 sm:py-2 sm:pl-2.5 sm:pr-5 shadow-[0_2px_12px_rgba(0,0,0,0.04)] backdrop-blur-md transition-all duration-300 hover:border-border hover:shadow-md"
           >
-            <span className="font-heading text-base sm:text-lg font-bold tracking-tight text-primary transition-colors group-hover:opacity-90">
-              Mussu
-            </span>
-            <span className="font-heading text-base sm:text-lg font-bold tracking-tight text-foreground ml-1.5 transition-colors group-hover:opacity-90">
-              Henna
-            </span>
+            <div className="relative size-7 sm:size-8 rounded-full overflow-hidden shrink-0 border border-primary/20 shadow-xs group-hover:scale-105 transition-transform duration-300 bg-amber-50/50">
+              <Image
+                src="/logo.webp"
+                alt="Mussu Henna"
+                width={32}
+                height={32}
+                priority
+                className="object-cover w-full h-full"
+              />
+            </div>
+            <div className="flex items-center">
+              <span className="font-heading text-base sm:text-lg font-bold tracking-tight text-primary transition-colors group-hover:opacity-90">
+                Mussu
+              </span>
+              <span className="font-heading text-base sm:text-lg font-bold tracking-tight text-foreground ml-1.5 transition-colors group-hover:opacity-90">
+                Henna
+              </span>
+            </div>
           </Link>
         </motion.div>
 

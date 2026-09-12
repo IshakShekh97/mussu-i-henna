@@ -29,7 +29,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Mussu Henna ✨",
-  description: "Muss's Henna Designs and Portfolio",
+  description: "Mussu's Henna Designs and Portfolio",
+  icons: {
+    icon: "/logo.webp",
+    apple: "/logo.webp",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
