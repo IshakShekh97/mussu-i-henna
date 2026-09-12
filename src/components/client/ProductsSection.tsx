@@ -18,21 +18,21 @@ export default function ProductsSection() {
     offset: ["start end", "end start"],
   });
 
-  // Entrance & Exit closing transforms linked directly to scroll
+  // Entrance opening & Exit closing transforms linked directly to scroll (matching Hero.tsx)
   const sectionOpacity = useTransform(
     scrollYProgress,
-    [0, 0.16, 0.78, 0.96],
-    [0.15, 1, 1, 0],
+    [0, 0.2, 0.76, 0.98],
+    [0, 1, 1, 0],
   );
   const sectionScale = useTransform(
     scrollYProgress,
-    [0, 0.16, 0.78, 0.96],
-    [0.96, 1, 1, 0.93],
+    [0, 0.2, 0.76, 0.98],
+    [0.92, 1, 1, 0.90],
   );
   const sectionY = useTransform(
     scrollYProgress,
-    [0, 0.16, 0.78, 0.96],
-    [35, 0, 0, -45],
+    [0, 0.2, 0.76, 0.98],
+    [60, 0, 0, -60],
   );
 
   const handleAddToCart = (product: Product, e?: React.MouseEvent) => {

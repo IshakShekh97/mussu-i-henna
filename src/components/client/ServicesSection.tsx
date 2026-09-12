@@ -7,6 +7,7 @@ import {
   motion,
   useMotionValue,
   useSpring,
+  useScroll,
   useTransform,
 } from "motion/react";
 import {
@@ -137,9 +138,42 @@ function TiltCard({
 }
 
 export default function ServicesSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  // Entrance opening & Exit closing transforms linked directly to scroll (matching Hero.tsx)
+  const sectionOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.2, 0.78, 0.98],
+    [0, 1, 1, 0],
+  );
+  const sectionScale = useTransform(
+    scrollYProgress,
+    [0, 0.2, 0.78, 0.98],
+    [0.92, 1, 1, 0.90],
+  );
+  const sectionY = useTransform(
+    scrollYProgress,
+    [0, 0.2, 0.78, 0.98],
+    [60, 0, 0, -60],
+  );
+
   return (
-    <section className="relative w-full py-10 sm:py-14 px-4 sm:px-8 md:px-10 lg:px-12 xl:px-16 2xl:px-20 select-none overflow-hidden">
-      <div className="relative z-10 w-full">
+    <section
+      ref={sectionRef}
+      className="relative w-full py-10 sm:py-14 px-4 sm:px-8 md:px-10 lg:px-12 xl:px-16 2xl:px-20 select-none overflow-hidden"
+    >
+      <motion.div
+        style={{
+          opacity: sectionOpacity,
+          scale: sectionScale,
+          y: sectionY,
+        }}
+        className="relative z-10 w-full origin-center"
+      >
         {/* ── Section Header (Understated Headline Left + Arrow Controls Right) ── */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-7 sm:mb-9">
           <div>
@@ -281,7 +315,7 @@ export default function ServicesSection() {
             </div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
