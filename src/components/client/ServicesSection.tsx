@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import {
   motion,
   useMotionValue,
@@ -131,25 +131,60 @@ export default function ServicesSection() {
         }}
         className="relative z-10 w-full origin-center"
       >
-        {/* ── Section Header with Typographic Diversity ── */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 sm:mb-12">
-          <div>
-            <div className="inline-flex items-center gap-2 text-xs font-mono tracking-[0.2em] uppercase text-primary mb-2.5">
-              <Sparkles className="size-3.5 text-primary" />
-              <span>{"SERVICES // BENGALI ATELIER"}</span>
+        {/* ── Section Header (Bold branding matching ProductsSection) ── */}
+        <div className="relative z-10 w-full mb-10 sm:mb-14">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.2 }}
+                transition={{ duration: 0.6 }}
+                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-mono tracking-wider uppercase mb-3"
+              >
+                <span>{"CEREMONIAL ATELIER | 03"}</span>
+              </motion.div>
+
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.2 }}
+                transition={{ duration: 0.65, delay: 0.08 }}
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-foreground uppercase"
+              >
+                CEREMONIAL SERVICES
+              </motion.h2>
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.2 }}
+                transition={{ duration: 0.65, delay: 0.14 }}
+                className="text-sm sm:text-base text-muted-foreground mt-2 max-w-2xl font-sans"
+              >
+                Handcrafted henna rituals honouring generations of Bengali
+                bridal traditions, from Gaye Holud vibrancy to Bou Bhat
+                elegance.
+              </motion.p>
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-foreground font-sans">
-              Ceremonial Suites &amp;{" "}
-              <span className="font-serif italic font-normal text-primary">
-                Bengali Kolka
-              </span>{" "}
-              Artistry
-            </h2>
+
+            {/* ── Direct Link to Booking Consultation ── */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="flex items-center"
+            >
+              <Link
+                href="/booking"
+                className="group inline-flex items-center gap-2.5 rounded-full border border-border/70 bg-secondary hover:bg-foreground hover:text-background px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold shadow-xs backdrop-blur-xl transition-all duration-200 cursor-pointer"
+              >
+                <span>Book Consultation</span>
+                <ArrowUpRight className="size-3.5 sm:size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+            </motion.div>
           </div>
-          <p className="text-xs sm:text-sm text-muted-foreground font-sans max-w-md md:text-right leading-relaxed">
-            Handcrafted henna rituals honouring generations of Bengali bridal
-            traditions, from Gaye Holud vibrancy to Bou Bhat elegance.
-          </p>
         </div>
 
         {/* ── Interactive Editorial List Container ── */}

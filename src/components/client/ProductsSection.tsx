@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { motion, useScroll, useTransform } from "motion/react";
 import Link from "next/link";
 import { useRef, useState } from "react";
@@ -73,8 +73,7 @@ export default function ProductsSection() {
                 transition={{ duration: 0.6 }}
                 className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-mono tracking-wider uppercase mb-3"
               >
-                <Sparkles className="size-3" />
-                <span>{"FEATURED COLLECTION // 02"}</span>
+                <span>{"FEATURED COLLECTION | 02"}</span>
               </motion.div>
 
               <motion.h2

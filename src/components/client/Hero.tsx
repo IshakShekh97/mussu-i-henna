@@ -198,7 +198,7 @@ export default function Hero() {
             >
               {/* Top row */}
               <div className="flex items-center justify-between text-[8px] sm:text-[10px] font-mono tracking-wider uppercase text-muted-foreground">
-                <span>{"01 // BRIDAL"}</span>
+                <span>{"01 BRIDAL"}</span>
                 <Sparkles className="size-2.5 sm:size-3.5 text-primary" />
               </div>
 
