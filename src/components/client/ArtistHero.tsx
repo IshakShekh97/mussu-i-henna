@@ -1,13 +1,134 @@
 "use client";
 
-import { ArrowUpRight, Sparkles, Star } from "lucide-react";
-import { motion, useScroll, useTransform } from "motion/react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  BookOpen,
+  Crown,
+  Heart,
+  Leaf,
+  Sparkles,
+  Star,
+} from "lucide-react";
+import { AnimatePresence, motion, useScroll, useTransform } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+
+interface StorySpot {
+  id: string;
+  number: string;
+  bengali: string;
+  title: string;
+  subtitle: string;
+  headline: string;
+  badge: string;
+  description: string;
+  details: string;
+  quote: string;
+  statValue: string;
+  statLabel: string;
+  x: number; // percentage coordinates on mussu-cutout.png
+  y: number;
+  icon: typeof Sparkles;
+}
+
+const STORY_SPOTS: StorySpot[] = [
+  {
+    id: "founder",
+    number: "01",
+    bengali: "মাস্টার শিল্পী ও প্রতিষ্ঠাতা",
+    title: "Mussu Shekh",
+    subtitle: "Founder & Lead Artisan",
+    headline: "Devotion to Authentic Bengali Bridal Heritage",
+    badge: "8+ Years Mastery",
+    description:
+      "Rooted in sacred Bengali traditions, Mussu drafts every suite freehand, weaving sacred blessings into intricate Kolka vines.",
+    details:
+      "Mussu began her journey in Kolkata learning the traditional bridal arts of Shankha-Pola alignment, Gaye Holud turmeric ceremonies, and auspicious peacock and paisley iconography. Every stroke is guided by deep reverence for the bride's sacred ceremony, ensuring no two brides ever wear the same design.",
+    quote:
+      "In Bengal, bridal mehndi is not merely an ornament — it is a visual prayer and sacred blessing worn on the bride's hands.",
+    statValue: "850+",
+    statLabel: "Brides Adorned",
+    x: 50,
+    y: 14,
+    icon: Crown,
+  },
+  {
+    id: "paste",
+    number: "02",
+    bengali: "বিশুদ্ধ প্রাকৃতিক উপাদান",
+    title: "Pure Bengal Lawsonia",
+    subtitle: "Artisanal Chemical-Free Paste",
+    headline: "Crafted Daily with Zero Synthetic Additives",
+    badge: "100% Organic",
+    description:
+      "Mixed freshly in small morning batches with triple-sifted Bengal henna leaves, steam-distilled eucalyptus, and pure cane sugar.",
+    details:
+      "Unlike mass-market cones loaded with toxic chemical dyes and synthetic PPD, our proprietary atelier blend is 100% organic, hypoallergenic, and soothing. It produces a natural, aromatic henna that deepens into a rich mahogany stain peaking at 48 hours for Bou Bhat celebrations.",
+    quote:
+      "Pure organic ingredients honor the bride's skin and create a luminous stain that endures through every post-wedding feast.",
+    statValue: "48h",
+    statLabel: "Mahogany Stain",
+    x: 35,
+    y: 54,
+    icon: Leaf,
+  },
+  {
+    id: "sketchbook",
+    number: "03",
+    bengali: "হস্তনির্মিত কলকা নকশা",
+    title: "Bespoke Bridal Suites",
+    subtitle: "Sacred Ceremonial Kolka",
+    headline: "Hand-Drafted to Mirror Your Benarasi Weave",
+    badge: "100% Freehand",
+    description:
+      "Custom motifs hand-sketched to harmonize with the bride's Benarasi zari, Shankha-Pola, and heirlooms without stencils.",
+    details:
+      "We never use stencils, stickers, or digital prints. From traditional floral vines and lotus pools to sacred conch motifs and groom narrative cuffs, each design is drawn directly onto the skin with surgical precision and artistic poise.",
+    quote:
+      "Your bridal suite should be as unique and personal as your wedding vows, capturing the spirit of your ancestral legacy.",
+    statValue: "100%",
+    statLabel: "Freehand Custom",
+    x: 62,
+    y: 52,
+    icon: BookOpen,
+  },
+  {
+    id: "atelier",
+    number: "04",
+    bengali: "শান্তিময় সংরক্ষিত ঘর",
+    title: "The Kolkata Atelier",
+    subtitle: "Private Bridal Sanctuary",
+    headline: "An Unhurried Atmosphere of Mindful Pampering",
+    badge: "Kolkata Sanctum",
+    description:
+      "A calm, meditative Kolkata sanctum designed to give brides a tranquil haven away from wedding rush.",
+    details:
+      "Located in the cultural heart of Kolkata, our studio offers a calm, meditative space where brides and their closest family can relax with soothing botanicals, artisanal teas, and gentle, unhurried ceremonial application.",
+    quote:
+      "A bride's application day should be a soothing retreat — a moment of quiet serenity before the grand celebrations begin.",
+    statValue: "Private",
+    statLabel: "Bridal Suite",
+    x: 50,
+    y: 84,
+    icon: Heart,
+  },
+];
 
 export default function ArtistHero() {
   const containerRef = useRef<HTMLElement>(null);
+  const [activeSpotId, setActiveSpotId] = useState<string>("founder");
+  const [modalSpot, setModalSpot] = useState<StorySpot | null>(null);
 
   // Parallax and scroll-exit transforms matching Hero and Services
   const { scrollYProgress } = useScroll({
@@ -44,7 +165,8 @@ export default function ArtistHero() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[92dvh] md:min-h-screen w-full flex flex-col justify-between pt-16 sm:pt-20 md:pt-14 pb-16 sm:pb-12 px-4 sm:px-8 md:px-12 lg:px-16 2xl:px-20 select-none overflow-hidden"
+      aria-label="Artist Story & Heritage Hero"
+      className="relative min-h-[96dvh] w-full flex flex-col justify-between pt-16 sm:pt-20 md:pt-14 pb-16 sm:pb-20 md:pb-24 px-4 sm:px-8 md:px-12 lg:px-16 2xl:px-20 select-none overflow-hidden"
     >
       <motion.div
         style={{
@@ -81,72 +203,276 @@ export default function ArtistHero() {
             transition={{ duration: 0.7, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
             className="hidden sm:flex flex-col items-end text-right"
           >
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-mono uppercase tracking-wider text-primary mb-1">
+            <Badge
+              variant="outline"
+              className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary/10 border-primary/20 text-[10px] font-mono uppercase tracking-wider text-primary mb-1"
+            >
               <Sparkles className="size-2.5 text-primary" />
               <span>BENGALI ATELIER</span>
-            </div>
+            </Badge>
             <span className="text-xs font-mono tracking-widest text-muted-foreground uppercase">
               {"KOLKATA | EST. 2024"}
             </span>
           </motion.div>
         </div>
 
-        {/* ── Center Stage: Giant Background Typography + Cutout Figure ── */}
-        <div className="relative w-full flex-1 flex items-center justify-center my-auto min-h-[380px] sm:min-h-[460px] md:min-h-[540px]">
-          {/* Giant Background Typography: "MUSSU" (Exact Image 1 "GAZU" Style) */}
+        {/* ── Center Stage: Giant Background Typography + Hero Cutout + Flanking Story Cards ── */}
+        <div className="relative w-full flex-1 flex items-center justify-center my-auto min-h-[460px] sm:min-h-[540px] md:min-h-[620px] lg:min-h-[680px]">
+          {/* Giant Background Typography: "MUSSU" */}
           <motion.div
             style={{ y: textY, opacity: textOpacity }}
             className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0"
           >
-            <h1 className="w-full text-center text-[22vw] sm:text-[23vw] md:text-[24vw] font-black tracking-tighter uppercase text-foreground leading-none">
+            <span className="text-[22vw] md:text-[24vw] font-black uppercase tracking-tighter text-foreground/8 leading-none select-none font-heading drop-shadow-xs">
               MUSSU
-            </h1>
+            </span>
           </motion.div>
 
-          {/* Center Artist Cutout Figure Overlapping Typography */}
-          <motion.div
-            initial={{ opacity: 0, y: 60, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            style={{ y: figureY, scale: figureScale }}
-            transition={{
-              duration: 1.1,
-              ease: [0.16, 1, 0.3, 1],
-              delay: 0.15,
-            }}
-            className="relative z-20 h-[62vh] sm:h-[68vh] md:h-[75vh] max-h-[720px] aspect-848/1264 flex items-end justify-center pointer-events-none"
-          >
-            <Image
-              src="/mussu-cutout.webp"
-              alt="Mussu Shekh - Master Henna Artist & Founder"
-              fill
-              priority
-              sizes="(max-width: 640px) 80vw, (max-width: 1024px) 50vw, 560px"
-              className="object-contain object-bottom drop-shadow-[0_25px_45px_rgba(0,0,0,0.18)]"
-            />
-          </motion.div>
+          {/* Center Stage Container with Left Cards, Cutout, and Right Cards */}
+          <div className="relative z-10 w-full flex items-center justify-center">
+            {/* Desktop Left Story Cards (01 & 02) */}
+            <div className="hidden xl:flex flex-col gap-5 w-72 2xl:w-80 absolute left-4 2xl:left-12 z-20">
+              {STORY_SPOTS.slice(0, 2).map((spot) => {
+                const isActive = activeSpotId === spot.id;
+                const Icon = spot.icon;
+
+                return (
+                  <motion.div
+                    key={spot.id}
+                    onMouseEnter={() => setActiveSpotId(spot.id)}
+                    onClick={() => {
+                      setActiveSpotId(spot.id);
+                      setModalSpot(spot);
+                    }}
+                    className={`p-4 rounded-2xl border transition-all duration-300 cursor-pointer text-left backdrop-blur-md ${
+                      isActive
+                        ? "bg-card/90 border-primary/50 shadow-xl ring-1 ring-primary/30 translate-x-1"
+                        : "bg-card/60 border-border/60 hover:bg-card/85 hover:border-border hover:translate-x-0.5"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-2 mb-1.5">
+                      <span className="text-xs font-mono font-bold text-primary">
+                        {`${spot.number} • ${spot.badge}`}
+                      </span>
+                      <Icon className="size-3.5 text-primary" />
+                    </div>
+                    <h3 className="text-sm font-bold font-sans text-foreground">
+                      {spot.title}
+                    </h3>
+                    <p className="text-[11px] font-mono text-muted-foreground uppercase tracking-wider mt-0.5">
+                      {spot.bengali}
+                    </p>
+                    <p className="text-xs font-sans text-muted-foreground mt-2 line-clamp-2 leading-relaxed">
+                      {spot.description}
+                    </p>
+                    <div className="flex items-center justify-between mt-2.5 pt-2 border-t border-border/40 text-[11px] font-mono">
+                      <span className="font-bold text-foreground">
+                        {spot.statValue}
+                      </span>
+                      <span className="text-primary hover:underline flex items-center gap-1">
+                        Read Story <ArrowRight className="size-2.5" />
+                      </span>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Central Cutout Figure with Natural Shadow & Interactive Hotspots */}
+            <div className="relative flex items-center justify-center">
+              <motion.div
+                style={{ y: figureY, scale: figureScale }}
+                initial={{ opacity: 0, scale: 0.94 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{
+                  duration: 0.9,
+                  delay: 0.15,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                className="relative w-auto h-[60vh] sm:h-[68vh] md:h-[75vh] lg:h-[82vh] max-h-[860px] aspect-[848/1264] max-w-[90vw]"
+              >
+                <Image
+                  src="/mussu-cutout.png"
+                  alt="Mussu - Lead Bengali Bridal Mehndi Artist"
+                  fill
+                  priority
+                  sizes="(max-width: 640px) 340px, (max-width: 1024px) 540px, 720px"
+                  className="object-contain object-center drop-shadow-[0_20px_45px_rgba(22,11,15,0.22)]"
+                />
+
+                {/* Interactive Hotspot Pins Directly on Mussu's Figure */}
+                {STORY_SPOTS.map((spot) => {
+                  const isActive = activeSpotId === spot.id;
+                  const Icon = spot.icon;
+
+                  return (
+                    <div
+                      key={spot.id}
+                      style={{ top: `${spot.y}%`, left: `${spot.x}%` }}
+                      className="absolute -translate-x-1/2 -translate-y-1/2 z-20"
+                    >
+                      <div className="relative flex items-center justify-center">
+                        {/* Glowing beacon ring */}
+                        <span
+                          className={`absolute inline-flex h-9 w-9 sm:h-11 sm:w-11 rounded-full opacity-75 animate-ping transition-colors ${
+                            isActive ? "bg-primary/50" : "bg-primary/20"
+                          }`}
+                        />
+
+                        {/* Interactive hotspot button */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setActiveSpotId(spot.id);
+                            setModalSpot(spot);
+                          }}
+                          onMouseEnter={() => setActiveSpotId(spot.id)}
+                          onFocus={() => setActiveSpotId(spot.id)}
+                          aria-label={`View story: ${spot.title}`}
+                          className={`relative flex items-center justify-center size-7 sm:size-9 rounded-full border-2 transition-all duration-300 shadow-xl cursor-pointer ${
+                            isActive
+                              ? "bg-primary text-primary-foreground border-background scale-110 ring-4 ring-primary/40"
+                              : "bg-background/90 text-foreground border-primary/50 hover:bg-primary hover:text-primary-foreground hover:scale-110"
+                          }`}
+                        >
+                          <Icon className="size-3 sm:size-4" />
+                          <span className="sr-only">{spot.title}</span>
+                        </button>
+                      </div>
+
+                      {/* Desktop Hover Label Pill */}
+                      <AnimatePresence>
+                        {isActive && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 6, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 4, scale: 0.95 }}
+                            transition={{ duration: 0.2 }}
+                            className="hidden lg:flex absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2.5 py-1 rounded-lg bg-foreground/95 text-background backdrop-blur-md text-[10px] font-mono tracking-wider uppercase whitespace-nowrap shadow-xl items-center gap-1.5 pointer-events-none z-30"
+                          >
+                            <span className="text-primary font-bold">
+                              {spot.number}
+                            </span>
+                            <span>{spot.title}</span>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+              </motion.div>
+            </div>
+
+            {/* Desktop Right Story Cards (03 & 04) */}
+            <div className="hidden xl:flex flex-col gap-5 w-72 2xl:w-80 absolute right-4 2xl:right-12 z-20">
+              {STORY_SPOTS.slice(2, 4).map((spot) => {
+                const isActive = activeSpotId === spot.id;
+                const Icon = spot.icon;
+
+                return (
+                  <motion.div
+                    key={spot.id}
+                    onMouseEnter={() => setActiveSpotId(spot.id)}
+                    onClick={() => {
+                      setActiveSpotId(spot.id);
+                      setModalSpot(spot);
+                    }}
+                    className={`p-4 rounded-2xl border transition-all duration-300 cursor-pointer text-left backdrop-blur-md ${
+                      isActive
+                        ? "bg-card/90 border-primary/50 shadow-xl ring-1 ring-primary/30 -translate-x-1"
+                        : "bg-card/60 border-border/60 hover:bg-card/85 hover:border-border hover:-translate-x-0.5"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-2 mb-1.5">
+                      <span className="text-xs font-mono font-bold text-primary">
+                        {`${spot.number} • ${spot.badge}`}
+                      </span>
+                      <Icon className="size-3.5 text-primary" />
+                    </div>
+                    <h3 className="text-sm font-bold font-sans text-foreground">
+                      {spot.title}
+                    </h3>
+                    <p className="text-[11px] font-mono text-muted-foreground uppercase tracking-wider mt-0.5">
+                      {spot.bengali}
+                    </p>
+                    <p className="text-xs font-sans text-muted-foreground mt-2 line-clamp-2 leading-relaxed">
+                      {spot.description}
+                    </p>
+                    <div className="flex items-center justify-between mt-2.5 pt-2 border-t border-border/40 text-[11px] font-mono">
+                      <span className="font-bold text-foreground">
+                        {spot.statValue}
+                      </span>
+                      <span className="text-primary hover:underline flex items-center gap-1">
+                        Read Story <ArrowRight className="size-2.5" />
+                      </span>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
         </div>
 
-        {/* ── Bottom Editorial Row (Image 1 Style) ── */}
-        <div className="relative z-30 w-full flex flex-col sm:flex-row items-center sm:items-end justify-between gap-6 pt-4">
+        {/* ── Mobile & Tablet Interactive Story Strip (Below Image on < xl screens) ── */}
+        <div className="xl:hidden w-full max-w-2xl mx-auto grid grid-cols-2 gap-2.5 sm:gap-3 py-3 z-20">
+          {STORY_SPOTS.map((spot) => {
+            const isActive = activeSpotId === spot.id;
+            const Icon = spot.icon;
+
+            return (
+              <button
+                key={spot.id}
+                type="button"
+                onClick={() => {
+                  setActiveSpotId(spot.id);
+                  setModalSpot(spot);
+                }}
+                className={`p-2.5 sm:p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer backdrop-blur-md ${
+                  isActive
+                    ? "bg-card/90 border-primary/50 shadow-md ring-1 ring-primary/30"
+                    : "bg-card/60 border-border/60 hover:bg-card/80"
+                }`}
+              >
+                <div className="flex items-center justify-between gap-1 mb-1">
+                  <span className="text-[10px] font-mono font-bold text-primary">
+                    {spot.number}
+                  </span>
+                  <Icon className="size-3 text-primary" />
+                </div>
+                <div className="text-xs font-bold font-sans text-foreground truncate">
+                  {spot.title}
+                </div>
+                <div className="text-[10px] font-mono text-muted-foreground mt-0.5">
+                  {spot.statValue} • Tap to view
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* ── Bottom Editorial Row (Action CTA + Collection Details) ── */}
+        <div className="relative z-30 w-full flex flex-col sm:flex-row items-center justify-between gap-6 pt-4 pb-2">
           {/* Bottom-Left: Action CTA Buttons */}
           <motion.div
             style={{ opacity: labelOpacity, x: labelLeftX }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center gap-4 sm:gap-6"
+            className="flex flex-wrap items-center gap-4 sm:gap-6"
           >
-            <Link
-              href="/booking"
-              className="group inline-flex items-center gap-2 rounded-full bg-foreground text-background hover:bg-primary hover:text-primary-foreground px-6 sm:px-7 py-3 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-200 shadow-md cursor-pointer hover:scale-105 active:scale-95"
+            <Button
+              asChild
+              className="group rounded-full bg-foreground text-background hover:bg-primary hover:text-primary-foreground px-6 sm:px-8 py-3.5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-200 shadow-md cursor-pointer hover:scale-105 active:scale-95 h-auto"
             >
-              <span>Book Consultation</span>
-              <ArrowUpRight className="size-3.5 sm:size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </Link>
+              <Link href="/booking">
+                <span>Book Consultation</span>
+                <ArrowUpRight className="size-3.5 sm:size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+            </Button>
 
             <a
               href="#atelier-works"
-              className="text-xs sm:text-sm font-sans font-semibold tracking-wider uppercase text-foreground underline underline-offset-4 decoration-foreground/30 hover:decoration-primary hover:text-primary transition-all cursor-pointer"
+              className="inline-flex items-center text-xs sm:text-sm font-sans font-semibold tracking-wider uppercase text-foreground/80 hover:text-primary underline underline-offset-4 decoration-foreground/30 hover:decoration-primary transition-all cursor-pointer py-2"
             >
               Explore Works ↓
             </a>
@@ -160,7 +486,7 @@ export default function ArtistHero() {
             transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col items-center sm:items-end text-center sm:text-right"
           >
-            <div className="flex items-center gap-1 text-[11px] font-mono text-primary font-bold tracking-widest uppercase">
+            <div className="flex items-center gap-1.5 text-[11px] font-mono text-primary font-bold tracking-widest uppercase">
               <Star className="size-3 fill-primary text-primary" />
               <span>BESPOKE BRIDAL SUITES</span>
             </div>
@@ -171,6 +497,77 @@ export default function ArtistHero() {
           </motion.div>
         </div>
       </motion.div>
+
+      {/* ── Pop-out Modal for Detailed Inspection (Mobile tap or Desktop card click) ── */}
+      <Dialog
+        open={modalSpot !== null}
+        onOpenChange={(open) => {
+          if (!open) setModalSpot(null);
+        }}
+      >
+        <DialogContent className="max-w-lg p-6 sm:p-8 rounded-3xl bg-background/95 backdrop-blur-xl border border-border shadow-2xl">
+          {modalSpot && (
+            <div className="flex flex-col gap-4">
+              <DialogHeader>
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <Badge
+                    variant="outline"
+                    className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary/10 border-primary/20 text-[10px] font-mono uppercase tracking-wider text-primary"
+                  >
+                    <Sparkles className="size-2.5 text-primary" />
+                    <span>{modalSpot.badge}</span>
+                  </Badge>
+                  <span className="text-xs font-mono text-muted-foreground">
+                    {modalSpot.number} / 04
+                  </span>
+                </div>
+
+                <DialogTitle className="text-2xl sm:text-3xl font-heading font-black text-foreground">
+                  {modalSpot.title}
+                </DialogTitle>
+                <DialogDescription className="text-xs font-mono text-primary uppercase tracking-wider">
+                  {modalSpot.bengali} • {modalSpot.subtitle}
+                </DialogDescription>
+              </DialogHeader>
+
+              {/* Quote Banner */}
+              <div className="p-4 rounded-2xl bg-muted/40 border border-border/60">
+                <p className="font-serif italic text-sm sm:text-base text-foreground/90 leading-relaxed">
+                  &ldquo;{modalSpot.quote}&rdquo;
+                </p>
+              </div>
+
+              {/* In-depth details */}
+              <div className="text-xs sm:text-sm font-sans text-muted-foreground leading-relaxed flex flex-col gap-3">
+                <p>{modalSpot.details}</p>
+              </div>
+
+              {/* Stat highlight & Consultation CTA */}
+              <div className="flex items-center justify-between p-3.5 rounded-xl bg-card border border-border/80">
+                <div>
+                  <div className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                    {modalSpot.statLabel}
+                  </div>
+                  <div className="text-xl sm:text-2xl font-heading font-black text-foreground">
+                    {modalSpot.statValue}
+                  </div>
+                </div>
+
+                <Button
+                  asChild
+                  size="sm"
+                  className="rounded-full bg-foreground text-background hover:bg-primary hover:text-primary-foreground font-mono text-xs uppercase tracking-wider px-5"
+                >
+                  <Link href="/booking">
+                    <span>Consult</span>
+                    <ArrowUpRight className="size-3 ml-1" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }

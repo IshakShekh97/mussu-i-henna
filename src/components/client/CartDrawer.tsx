@@ -14,6 +14,8 @@ import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/store/useCartStore";
 
 export default function CartDrawer() {
@@ -99,20 +101,27 @@ export default function CartDrawer() {
                     <h2 className="font-heading text-base sm:text-lg font-bold text-foreground leading-tight">
                       Your Atelier Bag
                     </h2>
-                    <span className="text-[11px] font-mono text-muted-foreground">
-                      {count} {count === 1 ? "Item" : "Items"} Selected
-                    </span>
+                    <div className="flex items-center gap-1.5 mt-0.5">
+                      <Badge
+                        variant="outline"
+                        className="text-[10px] font-mono border-primary/20 bg-primary/5 text-primary py-0 px-2"
+                      >
+                        {count} {count === 1 ? "Item" : "Items"}
+                      </Badge>
+                    </div>
                   </div>
                 </div>
 
-                <button
+                <Button
                   type="button"
+                  variant="ghost"
+                  size="icon-sm"
                   onClick={closeCart}
                   aria-label="Close Bag"
-                  className="size-8 rounded-full bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground flex items-center justify-center transition-colors cursor-pointer"
+                  className="rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
                 >
                   <X className="size-4" />
-                </button>
+                </Button>
               </div>
 
               {/* Free Shipping Progress Bar */}
@@ -152,14 +161,15 @@ export default function CartDrawer() {
                       Explore our freshly hand-churned Bengal organic cones,
                       aftercare balms, and ceremonial bridal suites.
                     </p>
-                    <Link
-                      href="/shop"
-                      onClick={closeCart}
-                      className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-2.5 text-xs font-bold uppercase tracking-wider shadow-xs hover:bg-primary/90 transition-all cursor-pointer"
+                    <Button
+                      asChild
+                      className="mt-6 rounded-full bg-primary text-primary-foreground px-6 py-2.5 text-xs font-bold uppercase tracking-wider shadow-xs hover:bg-primary/90 transition-all cursor-pointer h-auto"
                     >
-                      <Sparkles className="size-3.5" />
-                      <span>Explore Catalog</span>
-                    </Link>
+                      <Link href="/shop" onClick={closeCart}>
+                        <Sparkles className="size-3.5 mr-1.5" />
+                        <span>Explore Catalog</span>
+                      </Link>
+                    </Button>
                   </div>
                 ) : (
                   items.map(({ product, quantity }) => {
@@ -188,14 +198,16 @@ export default function CartDrawer() {
                               <h4 className="font-heading text-xs sm:text-sm font-bold text-foreground line-clamp-1">
                                 {product.name}
                               </h4>
-                              <button
+                              <Button
                                 type="button"
+                                variant="ghost"
+                                size="icon-xs"
                                 onClick={() => removeItem(product.id)}
                                 aria-label={`Remove ${product.name}`}
-                                className="text-muted-foreground/60 hover:text-destructive transition-colors p-1 cursor-pointer"
+                                className="text-muted-foreground/60 hover:text-destructive transition-colors cursor-pointer"
                               >
                                 <Trash2 className="size-3.5" />
-                              </button>
+                              </Button>
                             </div>
                             <span className="text-[10px] font-mono text-primary uppercase">
                               {product.category}
@@ -205,29 +217,33 @@ export default function CartDrawer() {
                           <div className="flex items-center justify-between mt-3">
                             {/* Quantity Controls */}
                             <div className="inline-flex items-center border border-border/60 rounded-lg bg-background overflow-hidden">
-                              <button
+                              <Button
                                 type="button"
+                                variant="ghost"
+                                size="icon-xs"
                                 onClick={() =>
                                   updateQuantity(product.id, quantity - 1)
                                 }
                                 aria-label="Decrease quantity"
-                                className="size-6 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors cursor-pointer"
+                                className="rounded-none text-muted-foreground hover:text-foreground hover:bg-muted/50 cursor-pointer"
                               >
                                 <Minus className="size-3" />
-                              </button>
+                              </Button>
                               <span className="w-7 text-center font-mono text-xs font-semibold text-foreground">
                                 {quantity}
                               </span>
-                              <button
+                              <Button
                                 type="button"
+                                variant="ghost"
+                                size="icon-xs"
                                 onClick={() =>
                                   updateQuantity(product.id, quantity + 1)
                                 }
                                 aria-label="Increase quantity"
-                                className="size-6 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors cursor-pointer"
+                                className="rounded-none text-muted-foreground hover:text-foreground hover:bg-muted/50 cursor-pointer"
                               >
                                 <Plus className="size-3" />
-                              </button>
+                              </Button>
                             </div>
 
                             {/* Line Total */}
@@ -259,23 +275,30 @@ export default function CartDrawer() {
                     instructions.
                   </p>
 
-                  <a
-                    href={`https://wa.me/919830000000?text=${whatsappMessage}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#160B0F] hover:bg-primary text-white py-3 text-xs sm:text-sm font-bold uppercase tracking-wider shadow-xs transition-all duration-200 cursor-pointer active:scale-95"
+                  <Button
+                    asChild
+                    size="lg"
+                    className="w-full rounded-xl bg-[#160B0F] hover:bg-primary text-white py-3 text-xs sm:text-sm font-bold uppercase tracking-wider shadow-xs transition-all duration-200 cursor-pointer h-auto"
                   >
-                    <span>Instant WhatsApp Checkout</span>
-                    <ArrowRight className="size-4 text-emerald-400" />
-                  </a>
+                    <a
+                      href={`https://wa.me/919830000000?text=${whatsappMessage}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <span>Instant WhatsApp Checkout</span>
+                      <ArrowRight className="size-4 text-emerald-400 ml-1.5" />
+                    </a>
+                  </Button>
 
-                  <Link
-                    href="/cart"
-                    onClick={closeCart}
-                    className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-secondary hover:bg-muted text-foreground py-2.5 text-xs font-semibold tracking-wider uppercase transition-colors cursor-pointer"
+                  <Button
+                    asChild
+                    variant="secondary"
+                    className="w-full rounded-xl border border-border text-foreground py-2.5 text-xs font-semibold tracking-wider uppercase transition-colors cursor-pointer h-auto"
                   >
-                    <span>View Full Bag &amp; Details</span>
-                  </Link>
+                    <Link href="/cart" onClick={closeCart}>
+                      <span>View Full Bag &amp; Details</span>
+                    </Link>
+                  </Button>
                 </div>
               )}
             </motion.aside>

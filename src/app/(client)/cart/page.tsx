@@ -18,6 +18,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 import { type CheckoutValues, checkoutSchema } from "@/lib/schemas";
 import { useCartStore } from "@/store/useCartStore";
 
@@ -111,10 +116,13 @@ export default function CartPage() {
           <span>Continue Shopping</span>
         </Link>
 
-        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-mono tracking-wider uppercase mb-2 w-fit">
+        <Badge
+          variant="outline"
+          className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border-primary/20 text-primary text-xs font-mono tracking-wider uppercase mb-2 w-fit"
+        >
           <Sparkles className="size-3" />
           <span>ATELIER CHECKOUT | 01</span>
-        </div>
+        </Badge>
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground uppercase">
           SHOPPING BAG &amp; CHECKOUT
         </h1>
@@ -151,21 +159,24 @@ export default function CartPage() {
               </p>
 
               <div className="mt-6 flex flex-col gap-2.5">
-                <Link
-                  href="/track-order"
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground py-3 text-xs font-bold uppercase tracking-wider shadow-xs hover:bg-primary/90 transition-all cursor-pointer"
+                <Button
+                  asChild
+                  className="w-full rounded-full bg-primary text-primary-foreground py-3 text-xs font-bold uppercase tracking-wider shadow-xs hover:bg-primary/90 transition-all cursor-pointer h-auto"
                 >
-                  <Truck className="size-4" />
-                  <span>Track Your Order</span>
-                </Link>
+                  <Link href="/track-order">
+                    <Truck className="size-4 mr-1.5" />
+                    <span>Track Your Order</span>
+                  </Link>
+                </Button>
 
-                <button
+                <Button
                   type="button"
+                  variant="secondary"
                   onClick={() => setOrderConfirmed(null)}
-                  className="w-full rounded-full border border-border bg-secondary py-2.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                  className="w-full rounded-full border border-border py-2.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer h-auto"
                 >
                   Close &amp; Return to Atelier
-                </button>
+                </Button>
               </div>
             </motion.div>
           </motion.div>
@@ -185,13 +196,15 @@ export default function CartPage() {
             You haven&apos;t added any artisanal henna cones, aftercare balms,
             or bridal suites to your bag yet.
           </p>
-          <Link
-            href="/shop"
-            className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-8 py-3 text-xs font-bold uppercase tracking-wider shadow-xs hover:bg-primary/90 transition-all cursor-pointer"
+          <Button
+            asChild
+            className="mt-6 rounded-full bg-primary text-primary-foreground px-8 py-3 text-xs font-bold uppercase tracking-wider shadow-xs hover:bg-primary/90 transition-all cursor-pointer h-auto"
           >
-            <Sparkles className="size-4" />
-            <span>Explore Artisan Catalog</span>
-          </Link>
+            <Link href="/shop">
+              <Sparkles className="size-4 mr-1.5" />
+              <span>Explore Artisan Catalog</span>
+            </Link>
+          </Button>
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -202,13 +215,15 @@ export default function CartPage() {
                 <h2 className="font-heading text-lg font-bold text-foreground">
                   Order Items ({items.length})
                 </h2>
-                <button
+                <Button
                   type="button"
+                  variant="ghost"
+                  size="xs"
                   onClick={clearCart}
-                  className="text-xs font-mono text-muted-foreground hover:text-destructive transition-colors cursor-pointer"
+                  className="text-xs font-mono text-muted-foreground hover:text-destructive transition-colors cursor-pointer h-auto py-1 px-2"
                 >
                   Clear Bag
-                </button>
+                </Button>
               </div>
 
               <div className="divide-y divide-border/40">
@@ -246,29 +261,33 @@ export default function CartPage() {
                       <div className="flex items-center justify-between sm:justify-end gap-5">
                         {/* Quantity controls */}
                         <div className="inline-flex items-center border border-border/60 rounded-xl bg-background overflow-hidden">
-                          <button
+                          <Button
                             type="button"
+                            variant="ghost"
+                            size="icon-xs"
                             onClick={() =>
                               updateQuantity(product.id, quantity - 1)
                             }
                             aria-label="Decrease quantity"
-                            className="size-7 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors cursor-pointer"
+                            className="rounded-none text-muted-foreground hover:text-foreground hover:bg-muted/50 cursor-pointer"
                           >
                             <Minus className="size-3" />
-                          </button>
+                          </Button>
                           <span className="w-8 text-center font-mono text-xs font-semibold text-foreground">
                             {quantity}
                           </span>
-                          <button
+                          <Button
                             type="button"
+                            variant="ghost"
+                            size="icon-xs"
                             onClick={() =>
                               updateQuantity(product.id, quantity + 1)
                             }
                             aria-label="Increase quantity"
-                            className="size-7 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors cursor-pointer"
+                            className="rounded-none text-muted-foreground hover:text-foreground hover:bg-muted/50 cursor-pointer"
                           >
                             <Plus className="size-3" />
-                          </button>
+                          </Button>
                         </div>
 
                         {/* Price */}
@@ -276,13 +295,15 @@ export default function CartPage() {
                           <div className="font-mono text-sm font-bold text-foreground">
                             ₹{priceNum * quantity}
                           </div>
-                          <button
+                          <Button
                             type="button"
+                            variant="ghost"
+                            size="xs"
                             onClick={() => removeItem(product.id)}
-                            className="text-[11px] font-sans text-muted-foreground hover:text-destructive transition-colors cursor-pointer mt-0.5"
+                            className="text-[11px] font-sans text-muted-foreground hover:text-destructive transition-colors cursor-pointer mt-0.5 h-auto p-0"
                           >
                             Remove
-                          </button>
+                          </Button>
                         </div>
                       </div>
                     </div>
@@ -317,18 +338,18 @@ export default function CartPage() {
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div>
-                  <label
+                  <Label
                     htmlFor="checkoutFullName"
                     className="block text-[11px] font-mono uppercase tracking-wider text-muted-foreground font-semibold mb-1"
                   >
                     FULL NAME *
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     id="checkoutFullName"
                     type="text"
                     placeholder="Debolina Banerjee"
                     {...register("fullName")}
-                    className="w-full rounded-xl bg-background border border-border/60 px-3.5 py-2.5 text-xs sm:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/40 focus:border-primary transition-all"
+                    className="w-full rounded-xl bg-background border-border/60 px-3.5 py-2.5 text-xs sm:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary transition-all h-auto"
                   />
                   {errors.fullName && (
                     <span className="text-[11px] text-destructive mt-1 block">
@@ -339,18 +360,18 @@ export default function CartPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label
+                    <Label
                       htmlFor="checkoutEmail"
                       className="block text-[11px] font-mono uppercase tracking-wider text-muted-foreground font-semibold mb-1"
                     >
                       EMAIL *
-                    </label>
-                    <input
+                    </Label>
+                    <Input
                       id="checkoutEmail"
                       type="email"
                       placeholder="debolina@example.com"
                       {...register("email")}
-                      className="w-full rounded-xl bg-background border border-border/60 px-3.5 py-2.5 text-xs sm:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/40 focus:border-primary transition-all"
+                      className="w-full rounded-xl bg-background border-border/60 px-3.5 py-2.5 text-xs sm:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary transition-all h-auto"
                     />
                     {errors.email && (
                       <span className="text-[11px] text-destructive mt-1 block">
@@ -360,18 +381,18 @@ export default function CartPage() {
                   </div>
 
                   <div>
-                    <label
+                    <Label
                       htmlFor="checkoutPhone"
                       className="block text-[11px] font-mono uppercase tracking-wider text-muted-foreground font-semibold mb-1"
                     >
                       PHONE / WHATSAPP *
-                    </label>
-                    <input
+                    </Label>
+                    <Input
                       id="checkoutPhone"
                       type="tel"
                       placeholder="+91 98300 00000"
                       {...register("phone")}
-                      className="w-full rounded-xl bg-background border border-border/60 px-3.5 py-2.5 text-xs sm:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/40 focus:border-primary transition-all"
+                      className="w-full rounded-xl bg-background border-border/60 px-3.5 py-2.5 text-xs sm:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary transition-all h-auto"
                     />
                     {errors.phone && (
                       <span className="text-[11px] text-destructive mt-1 block">
@@ -382,18 +403,18 @@ export default function CartPage() {
                 </div>
 
                 <div>
-                  <label
+                  <Label
                     htmlFor="checkoutAddress"
                     className="block text-[11px] font-mono uppercase tracking-wider text-muted-foreground font-semibold mb-1"
                   >
                     DELIVERY STREET ADDRESS *
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     id="checkoutAddress"
                     type="text"
                     placeholder="Flat 4B, Camac Heritage Mansions, Park Street"
                     {...register("address")}
-                    className="w-full rounded-xl bg-background border border-border/60 px-3.5 py-2.5 text-xs sm:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/40 focus:border-primary transition-all"
+                    className="w-full rounded-xl bg-background border-border/60 px-3.5 py-2.5 text-xs sm:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary transition-all h-auto"
                   />
                   {errors.address && (
                     <span className="text-[11px] text-destructive mt-1 block">
@@ -404,18 +425,18 @@ export default function CartPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label
+                    <Label
                       htmlFor="checkoutCity"
                       className="block text-[11px] font-mono uppercase tracking-wider text-muted-foreground font-semibold mb-1"
                     >
                       CITY *
-                    </label>
-                    <input
+                    </Label>
+                    <Input
                       id="checkoutCity"
                       type="text"
                       placeholder="Kolkata"
                       {...register("city")}
-                      className="w-full rounded-xl bg-background border border-border/60 px-3.5 py-2.5 text-xs sm:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/40 focus:border-primary transition-all"
+                      className="w-full rounded-xl bg-background border-border/60 px-3.5 py-2.5 text-xs sm:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary transition-all h-auto"
                     />
                     {errors.city && (
                       <span className="text-[11px] text-destructive mt-1 block">
@@ -425,18 +446,18 @@ export default function CartPage() {
                   </div>
 
                   <div>
-                    <label
+                    <Label
                       htmlFor="checkoutPostalCode"
                       className="block text-[11px] font-mono uppercase tracking-wider text-muted-foreground font-semibold mb-1"
                     >
                       PIN CODE *
-                    </label>
-                    <input
+                    </Label>
+                    <Input
                       id="checkoutPostalCode"
                       type="text"
                       placeholder="700016"
                       {...register("postalCode")}
-                      className="w-full rounded-xl bg-background border border-border/60 px-3.5 py-2.5 text-xs sm:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/40 focus:border-primary transition-all"
+                      className="w-full rounded-xl bg-background border-border/60 px-3.5 py-2.5 text-xs sm:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary transition-all h-auto"
                     />
                     {errors.postalCode && (
                       <span className="text-[11px] text-destructive mt-1 block">
@@ -450,22 +471,23 @@ export default function CartPage() {
                 <div className="pt-2">
                   <div className="flex gap-2">
                     <div className="relative flex-1">
-                      <Tag className="size-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                      <input
+                      <Tag className="size-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none z-10" />
+                      <Input
                         type="text"
                         value={couponCode}
                         onChange={(e) => setCouponCode(e.target.value)}
                         placeholder="Promo code (e.g. BRIDAL10)"
-                        className="w-full pl-9 pr-3 py-2 rounded-xl bg-background border border-border/60 text-xs font-mono uppercase text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                        className="w-full pl-9 pr-3 py-2 rounded-xl bg-background border-border/60 text-xs font-mono uppercase text-foreground focus-visible:ring-2 focus-visible:ring-primary h-auto"
                       />
                     </div>
-                    <button
+                    <Button
                       type="button"
+                      variant="secondary"
                       onClick={applyCoupon}
-                      className="px-4 py-2 rounded-xl bg-secondary hover:bg-muted text-foreground text-xs font-semibold tracking-wider uppercase border border-border/60 cursor-pointer"
+                      className="px-4 py-2 rounded-xl text-foreground text-xs font-semibold tracking-wider uppercase border border-border/60 cursor-pointer h-auto"
                     >
                       Apply
-                    </button>
+                    </Button>
                   </div>
                   {couponApplied && (
                     <span className="text-[11px] text-emerald-500 font-mono mt-1 block">
@@ -479,8 +501,10 @@ export default function CartPage() {
                   )}
                 </div>
 
+                <Separator className="my-4 bg-border/40" />
+
                 {/* Pricing Summary Breakdown */}
-                <div className="pt-4 border-t border-border/40 space-y-2 text-xs">
+                <div className="space-y-2 text-xs">
                   <div className="flex items-center justify-between text-muted-foreground">
                     <span>Subtotal</span>
                     <span className="font-mono text-foreground font-semibold">
@@ -508,7 +532,9 @@ export default function CartPage() {
                     </div>
                   )}
 
-                  <div className="flex items-center justify-between text-sm font-bold pt-2 border-t border-border/40 text-foreground">
+                  <Separator className="my-2 bg-border/40" />
+
+                  <div className="flex items-center justify-between text-sm font-bold text-foreground">
                     <span>Total Amount</span>
                     <span className="font-mono text-lg text-primary">
                       ₹{finalTotal}
@@ -517,10 +543,11 @@ export default function CartPage() {
                 </div>
 
                 {/* Submit / WhatsApp Order Button */}
-                <button
+                <Button
                   type="submit"
+                  size="lg"
                   disabled={isSubmitting}
-                  className="w-full mt-4 inline-flex items-center justify-center gap-2 rounded-xl bg-[#160B0F] hover:bg-primary text-white py-3.5 text-xs sm:text-sm font-bold uppercase tracking-wider shadow-xs transition-all duration-200 cursor-pointer active:scale-95 disabled:opacity-50"
+                  className="w-full mt-4 inline-flex items-center justify-center gap-2 rounded-xl bg-[#160B0F] hover:bg-primary text-white py-3.5 text-xs sm:text-sm font-bold uppercase tracking-wider shadow-xs transition-all duration-200 cursor-pointer active:scale-95 disabled:opacity-50 h-auto"
                 >
                   <Package className="size-4 text-emerald-400" />
                   <span>
@@ -528,7 +555,7 @@ export default function CartPage() {
                       ? "Preparing Inquiry..."
                       : "Confirm Order via WhatsApp"}
                   </span>
-                </button>
+                </Button>
               </form>
             </div>
           </div>

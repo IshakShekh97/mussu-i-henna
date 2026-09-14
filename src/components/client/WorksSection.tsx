@@ -5,6 +5,8 @@ import { AnimatePresence, motion, useScroll, useTransform } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 interface SignatureWork {
   id: string;
@@ -105,10 +107,13 @@ export default function WorksSection() {
         {/* ── Section Header Row ── */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-border/50">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[11px] font-mono tracking-wider uppercase mb-2">
+            <Badge
+              variant="outline"
+              className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-primary/10 border-primary/20 text-primary text-[11px] font-mono tracking-wider uppercase mb-2"
+            >
               <Sparkles className="size-3" />
               <span>PORTFOLIO GLIMPSE | 04</span>
-            </div>
+            </Badge>
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-foreground uppercase">
               ATELIER WORKS ARCHIVE
             </h2>
@@ -118,13 +123,16 @@ export default function WorksSection() {
             </p>
           </div>
 
-          <Link
-            href="/about"
-            className="group inline-flex items-center gap-2 rounded-full border border-border/70 bg-secondary hover:bg-foreground hover:text-background px-5 py-2.5 text-xs sm:text-sm font-semibold shadow-xs backdrop-blur-xl transition-all duration-200 cursor-pointer self-start sm:self-auto shrink-0"
+          <Button
+            asChild
+            variant="secondary"
+            className="group rounded-full border border-border/70 bg-secondary hover:bg-foreground hover:text-background px-5 py-2.5 text-xs sm:text-sm font-semibold shadow-xs backdrop-blur-xl transition-all duration-200 cursor-pointer self-start sm:self-auto shrink-0 h-auto"
           >
-            <span>Explore All Works &amp; 3D Gallery</span>
-            <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </Link>
+            <Link href="/about">
+              <span>Explore All Works &amp; 3D Gallery</span>
+              <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Link>
+          </Button>
         </div>
 
         {/* ── Main Fuller Bento Showcase ── */}

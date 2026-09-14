@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useCartStore } from "@/store/useCartStore";
 
@@ -256,15 +257,17 @@ export default function Navbar({ cartCount, onCartClick }: NavbarProps) {
             />
 
             {/* Cart Badge */}
-            <motion.span
+            <motion.div
               key={effectiveCartCount}
               initial={{ scale: 0.7, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: "spring", stiffness: 500, damping: 25 }}
-              className="absolute -top-1 -right-1 flex h-4.5 min-w-4.5 sm:h-5 sm:min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[10px] sm:text-[11px] font-bold text-primary-foreground shadow-xs ring-2 ring-background"
+              className="absolute -top-1 -right-1"
             >
-              {effectiveCartCount}
-            </motion.span>
+              <Badge className="flex h-4.5 min-w-4.5 sm:h-5 sm:min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[10px] sm:text-[11px] font-bold text-primary-foreground shadow-xs ring-2 ring-background border-none">
+                {effectiveCartCount}
+              </Badge>
+            </motion.div>
           </motion.button>
 
           {/* Mobile Menu Toggle Button */}

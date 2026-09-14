@@ -15,6 +15,8 @@ import {
 import { AnimatePresence, motion, useScroll, useTransform } from "motion/react";
 import Link from "next/link";
 import { useRef, useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 interface PackageOption {
   id: string;
@@ -136,16 +138,13 @@ export default function BookingDemoSection() {
         {/* ── Compact Editorial Header ── */}
         <div className="w-full mb-8 sm:mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, amount: 0.3 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[11px] font-mono tracking-wider uppercase mb-2"
+            <Badge
+              variant="outline"
+              className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-primary/10 border-primary/20 text-primary text-[11px] font-mono tracking-wider uppercase mb-2"
             >
               <Sparkles className="size-3" />
               <span>ATELIER RESERVATIONS | 04</span>
-            </motion.div>
+            </Badge>
 
             <motion.h2
               initial={{ opacity: 0, y: 15 }}
@@ -189,9 +188,12 @@ export default function BookingDemoSection() {
                     STEP 01 — SELECT RITUAL
                   </span>
                 </div>
-                <span className="px-2.5 py-0.5 rounded-full bg-muted/70 text-[10px] font-mono tracking-wider text-muted-foreground uppercase">
+                <Badge
+                  variant="outline"
+                  className="px-2.5 py-0.5 rounded-full bg-muted/70 border-border/50 text-[10px] font-mono tracking-wider text-muted-foreground uppercase"
+                >
                   SEASON 2026—2027
-                </span>
+                </Badge>
               </div>
 
               {/* Package Selector Pills */}
@@ -277,13 +279,17 @@ export default function BookingDemoSection() {
 
             {/* CTAs Row */}
             <div className="flex flex-col sm:flex-row items-center gap-3 pt-5 mt-4 border-t border-border/40">
-              <Link
-                href={`/booking?package=${encodeURIComponent(selectedPkg.id)}`}
-                className="w-full sm:w-auto flex-1 group inline-flex items-center justify-center gap-2 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer shadow-xs active:scale-95"
+              <Button
+                asChild
+                className="w-full sm:w-auto flex-1 group rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer shadow-xs active:scale-95 h-auto"
               >
-                <span>Proceed to Reservation Form</span>
-                <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Link>
+                <Link
+                  href={`/booking?package=${encodeURIComponent(selectedPkg.id)}`}
+                >
+                  <span>Proceed to Reservation Form</span>
+                  <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 ml-1" />
+                </Link>
+              </Button>
             </div>
           </motion.div>
 
@@ -333,15 +339,19 @@ export default function BookingDemoSection() {
                 </div>
               </div>
 
-              <a
-                href="https://wa.me/919830000000?text=Hello%20Mussu%2C%20I%20would%20like%20to%20inquire%20about%20bridal%20mehndi%20booking%20dates."
-                target="_blank"
-                rel="noreferrer"
-                className="mt-4 w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#160B0F] hover:bg-primary text-white px-4 py-2.5 text-xs font-semibold tracking-wider uppercase transition-all duration-200 cursor-pointer shadow-xs active:scale-95"
+              <Button
+                asChild
+                className="mt-4 w-full rounded-xl bg-[#160B0F] hover:bg-primary text-white px-4 py-2.5 text-xs font-semibold tracking-wider uppercase transition-all duration-200 cursor-pointer shadow-xs active:scale-95 h-auto"
               >
-                <MessageCircle className="size-3.5 text-emerald-400" />
-                <span>Direct WhatsApp Concierge</span>
-              </a>
+                <a
+                  href="https://wa.me/919830000000?text=Hello%20Mussu%2C%20I%20would%20like%20to%20inquire%20about%20bridal%20mehndi%20booking%20dates."
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <MessageCircle className="size-3.5 text-emerald-400 mr-1.5" />
+                  <span>Direct WhatsApp Concierge</span>
+                </a>
+              </Button>
             </motion.div>
 
             {/* Compact FAQ Accordion */}

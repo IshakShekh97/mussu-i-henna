@@ -4,6 +4,8 @@ import { ArrowUpRight } from "lucide-react";
 import { motion, useScroll, useTransform } from "motion/react";
 import Link from "next/link";
 import { useRef, useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { FEATURED_PRODUCTS, type Product } from "@/data/products";
 import { useCartStore } from "@/store/useCartStore";
 import CartToast from "./CartToast";
@@ -68,15 +70,12 @@ export default function ProductsSection() {
         <div className="relative z-10 w-full mb-10 sm:mb-14">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.2 }}
-                transition={{ duration: 0.6 }}
-                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-mono tracking-wider uppercase mb-3"
+              <Badge
+                variant="outline"
+                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border-primary/20 text-primary text-xs font-mono tracking-wider uppercase mb-3"
               >
                 <span>{"FEATURED COLLECTION | 02"}</span>
-              </motion.div>
+              </Badge>
 
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
@@ -108,13 +107,16 @@ export default function ProductsSection() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="flex items-center"
             >
-              <Link
-                href="/shop"
-                className="group inline-flex items-center gap-2.5 rounded-full border border-border/70 bg-secondary hover:bg-foreground hover:text-background px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold shadow-xs backdrop-blur-xl transition-all duration-200 cursor-pointer"
+              <Button
+                asChild
+                variant="secondary"
+                className="group rounded-full border border-border/70 bg-secondary hover:bg-foreground hover:text-background px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold shadow-xs backdrop-blur-xl transition-all duration-200 cursor-pointer h-auto"
               >
-                <span>Explore All Products</span>
-                <ArrowUpRight className="size-3.5 sm:size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Link>
+                <Link href="/shop">
+                  <span>Explore All Products</span>
+                  <ArrowUpRight className="size-3.5 sm:size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </Link>
+              </Button>
             </motion.div>
           </div>
         </div>

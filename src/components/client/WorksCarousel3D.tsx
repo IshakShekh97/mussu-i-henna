@@ -12,6 +12,9 @@ import { motion, useScroll, useTransform } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { WORKS } from "@/data/works";
 
 export default function WorksCarousel3D() {
@@ -66,16 +69,13 @@ export default function WorksCarousel3D() {
       >
         {/* ── Section Header (Editorial Luxury with Serif & Sans Contrast) ── */}
         <div className="w-full max-w-4xl text-center flex flex-col items-center mb-12 sm:mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, amount: 0.2 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-mono tracking-wider uppercase mb-4"
+          <Badge
+            variant="outline"
+            className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/10 border-primary/20 text-primary text-xs font-mono tracking-wider uppercase mb-4"
           >
             <Sparkles className="size-3 text-primary" />
             <span>{"THE ATELIER COLLECTION | 02"}</span>
-          </motion.div>
+          </Badge>
 
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -220,23 +220,27 @@ export default function WorksCarousel3D() {
           </motion.div>
 
           {/* Navigation Arrows */}
-          <button
+          <Button
             type="button"
+            variant="outline"
+            size="icon"
             onClick={handlePrev}
             aria-label="Previous artwork"
-            className="absolute left-2 sm:left-6 md:left-10 z-40 size-11 sm:size-12 rounded-full border border-border/60 bg-background/80 hover:bg-foreground hover:text-background text-foreground backdrop-blur-xl shadow-lg flex items-center justify-center transition-all duration-200 cursor-pointer active:scale-95"
+            className="absolute left-2 sm:left-6 md:left-10 z-40 size-11 sm:size-12 rounded-full border-border/60 bg-background/80 hover:bg-foreground hover:text-background text-foreground backdrop-blur-xl shadow-lg cursor-pointer active:scale-95"
           >
             <ChevronLeft className="size-5" />
-          </button>
+          </Button>
 
-          <button
+          <Button
             type="button"
+            variant="outline"
+            size="icon"
             onClick={handleNext}
             aria-label="Next artwork"
-            className="absolute right-2 sm:right-6 md:right-10 z-40 size-11 sm:size-12 rounded-full border border-border/60 bg-background/80 hover:bg-foreground hover:text-background text-foreground backdrop-blur-xl shadow-lg flex items-center justify-center transition-all duration-200 cursor-pointer active:scale-95"
+            className="absolute right-2 sm:right-6 md:right-10 z-40 size-11 sm:size-12 rounded-full border-border/60 bg-background/80 hover:bg-foreground hover:text-background text-foreground backdrop-blur-xl shadow-lg cursor-pointer active:scale-95"
           >
             <ChevronRight className="size-5" />
-          </button>
+          </Button>
         </div>
 
         {/* ── Active Artwork Tracker Dots ── */}
@@ -259,7 +263,7 @@ export default function WorksCarousel3D() {
         {/* ── Artist Hallmark Definition Box (Image 2 Inspired) ── */}
         <div className="w-full max-w-5xl rounded-3xl border border-border/60 bg-card/60 backdrop-blur-xl p-6 sm:p-10 shadow-xs">
           {/* 3 Definition Pillars */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-border/40">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8">
             <div className="flex flex-col items-start text-left">
               <div className="size-10 rounded-2xl bg-primary/10 border border-primary/20 text-primary flex items-center justify-center mb-3">
                 <Flower2 className="size-5" />
@@ -301,8 +305,10 @@ export default function WorksCarousel3D() {
             </div>
           </div>
 
+          <Separator className="my-2 bg-border/40" />
+
           {/* Artist Personal Quote & CTA Row */}
-          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="text-center sm:text-left">
               <p className="font-serif italic text-base sm:text-lg text-foreground/90 max-w-xl">
                 &ldquo;Every bride&apos;s hands carry a sacred generational
@@ -319,13 +325,15 @@ export default function WorksCarousel3D() {
               </div>
             </div>
 
-            <Link
-              href="/booking"
-              className="group inline-flex items-center gap-2.5 rounded-full border border-primary/30 bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 text-xs sm:text-sm font-semibold shadow-md transition-all shrink-0 hover:scale-105 active:scale-95 cursor-pointer"
+            <Button
+              asChild
+              className="group rounded-full border border-primary/30 bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 text-xs sm:text-sm font-semibold shadow-md transition-all shrink-0 hover:scale-105 active:scale-95 cursor-pointer h-auto"
             >
-              <span>Book Bridal Consultation</span>
-              <Sparkles className="size-3.5 transition-transform group-hover:rotate-12" />
-            </Link>
+              <Link href="/booking">
+                <span>Book Bridal Consultation</span>
+                <Sparkles className="size-3.5 transition-transform group-hover:rotate-12 ml-1" />
+              </Link>
+            </Button>
           </div>
         </div>
       </motion.div>

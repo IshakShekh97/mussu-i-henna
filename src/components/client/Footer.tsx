@@ -10,6 +10,8 @@ import {
 } from "motion/react";
 import Link from "next/link";
 import { useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 function InstagramIcon({ className }: { className?: string }) {
   return (
@@ -121,7 +123,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="/shop?category=aftercare"
+                    href="/shop?category=care&q=balm"
                     className="group inline-flex items-center gap-1 hover:text-white transition-colors duration-200"
                   >
                     <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1.5">
@@ -131,7 +133,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="/shop?category=oils"
+                    href="/shop?category=care&q=oil"
                     className="group inline-flex items-center gap-1 hover:text-white transition-colors duration-200"
                   >
                     <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1.5">
@@ -253,11 +255,11 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="/booking"
+                    href="/booking?quotation=bridal"
                     className="group inline-flex items-center gap-1 hover:text-white transition-colors duration-200"
                   >
                     <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1.5">
-                      Consultation
+                      Request Quotation
                     </span>
                   </Link>
                 </li>
@@ -309,25 +311,22 @@ export default function Footer() {
                   onSubmit={handleSubscribe}
                   className="w-full relative flex items-center bg-white/95 text-neutral-900 rounded-full p-1.5 pl-4 sm:pl-5 border border-white/20 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all duration-300"
                 >
-                  <input
+                  <Input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Your email address"
                     disabled={isSubscribed}
-                    className="w-full bg-transparent text-xs sm:text-sm font-sans text-neutral-900 placeholder:text-neutral-500 focus:outline-none pr-2"
+                    className="w-full bg-transparent border-0 text-xs sm:text-sm font-sans text-neutral-900 placeholder:text-neutral-500 focus-visible:ring-0 shadow-none pr-2 h-auto py-1"
                   />
 
-                  <motion.button
+                  <Button
                     type="submit"
                     disabled={isSubscribed}
-                    whileHover={{ scale: 1.04 }}
-                    whileTap={{ scale: 0.96 }}
-                    aria-label="Subscribe to newsletter"
-                    className={`rounded-full px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-colors duration-200 shrink-0 flex items-center gap-1.5 cursor-pointer ${
+                    className={`rounded-full px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-colors duration-200 shrink-0 flex items-center gap-1.5 cursor-pointer h-auto ${
                       isSubscribed
-                        ? "bg-emerald-600 text-white"
+                        ? "bg-emerald-600 text-white hover:bg-emerald-600"
                         : "bg-[#160B0F] hover:bg-primary text-white"
                     }`}
                   >
@@ -356,7 +355,7 @@ export default function Footer() {
                         </motion.span>
                       )}
                     </AnimatePresence>
-                  </motion.button>
+                  </Button>
                 </form>
 
                 {/* Social Icons Row (Zero Shadows, Fluid Spring Hover Physics) */}

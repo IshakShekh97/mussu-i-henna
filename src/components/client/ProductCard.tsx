@@ -4,6 +4,9 @@ import { Heart, ShoppingCart } from "lucide-react";
 import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import type { Product } from "@/data/products";
 
 interface ProductCardProps {
@@ -83,24 +86,27 @@ export default function ProductCard({
       <div className="relative z-10 flex items-center justify-between w-full">
         <div className="flex items-center gap-2 flex-wrap">
           {product.badges.map((badge) => (
-            <span
+            <Badge
               key={badge}
-              className="inline-flex items-center rounded-full px-3.5 py-1.5 bg-black/5 text-[11px] sm:text-xs font-medium text-foreground/85 tracking-normal border border-black/5 backdrop-blur-md transition-colors"
+              variant="outline"
+              className="inline-flex items-center rounded-full px-3.5 py-1.5 bg-black/5 dark:bg-white/5 text-[11px] sm:text-xs font-medium text-foreground/85 tracking-normal border border-black/5 dark:border-white/10 backdrop-blur-md transition-colors"
             >
               {badge}
-            </span>
+            </Badge>
           ))}
         </div>
 
         {/* Favorite Button */}
-        <button
+        <Button
           type="button"
+          variant="ghost"
+          size="icon-xs"
           onClick={(e) => {
             e.stopPropagation();
             setIsFavorite(!isFavorite);
           }}
           aria-label="Add to wishlist"
-          className="size-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-red-500 hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+          className="size-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-red-500 hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-pointer"
         >
           <Heart
             className={`size-4 transition-transform active:scale-125 ${
@@ -109,16 +115,16 @@ export default function ProductCard({
                 : "text-muted-foreground/60"
             }`}
           />
-        </button>
+        </Button>
       </div>
 
       {/* ── Center: Transparent Product with Zoom-Out & Parallax Effect ── */}
       <div className="relative z-10 w-full h-56 sm:h-64 my-auto flex items-center justify-center p-3">
         {/* Loading Skeleton */}
         {!imageLoaded && (
-          <div className="absolute inset-4 rounded-2xl bg-black/5  animate-pulse flex items-center justify-center">
+          <Skeleton className="absolute inset-4 rounded-2xl bg-black/5 dark:bg-white/5 flex items-center justify-center">
             <span className="size-6 rounded-full border-2 border-primary/40 border-t-primary animate-spin" />
-          </div>
+          </Skeleton>
         )}
 
         {/* Parallax Floating Container */}
@@ -169,17 +175,18 @@ export default function ProductCard({
         </div>
 
         {/* Solid Circular Action Button (As in Reference Image) */}
-        <button
+        <Button
           type="button"
+          size="icon"
           onClick={(e) => {
             e.stopPropagation();
             onAddToCart?.(product, e);
           }}
           aria-label={`Add ${product.name} to bag`}
-          className="group/btn size-11 sm:size-12 rounded-full bg-foreground text-background flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all duration-200 shrink-0 group-hover:bg-primary group-hover:text-primary-foreground cursor-pointer"
+          className="group/btn size-11 sm:size-12 rounded-full bg-foreground text-background flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all duration-200 shrink-0 hover:bg-primary hover:text-primary-foreground cursor-pointer"
         >
           <ShoppingCart className="size-5 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover:translate-x-0.5" />
-        </button>
+        </Button>
       </div>
     </motion.div>
   );

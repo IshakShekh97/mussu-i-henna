@@ -22,6 +22,19 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
 import { type BookingFormValues, bookingFormSchema } from "@/lib/schemas";
 
 interface CeremonyOption {
@@ -100,7 +113,13 @@ const BENGAL_DISTRICTS = [
 
 function BookingContent() {
   const searchParams = useSearchParams();
-  const occasionParam = searchParams.get("occasion");
+  const rawParam =
+    searchParams.get("occasion") ||
+    searchParams.get("ceremony") ||
+    searchParams.get("package") ||
+    searchParams.get("quotation");
+
+  const occasionParam = rawParam === "true" || !rawParam ? "bridal" : rawParam;
 
   const [confirmedBooking, setConfirmedBooking] =
     useState<BookingFormValues | null>(null);
@@ -110,7 +129,9 @@ function BookingContent() {
   const [customCeremoniesList, setCustomCeremoniesList] = useState<string[]>(
     [],
   );
-  const [isAddingCustom, setIsAddingCustom] = useState(false);
+  const [isAddingCustom, setIsAddingCustom] = useState(
+    occasionParam === "custom",
+  );
   const [customInputText, setCustomInputText] = useState("");
 
   const initialCeremony =
@@ -299,10 +320,13 @@ function BookingContent() {
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className="relative z-10 w-full mb-8 sm:mb-10 text-center max-w-3xl mx-auto"
       >
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-mono tracking-wider uppercase mb-2.5">
+        <Badge
+          variant="outline"
+          className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border-primary/20 text-primary text-xs font-mono tracking-wider uppercase mb-2.5"
+        >
           <Sparkles className="size-3" />
           <span>BENGALI BRIDAL ATELIER</span>
-        </div>
+        </Badge>
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground uppercase">
           BOOK YOUR CEREMONIAL RITUAL
         </h1>
@@ -313,7 +337,7 @@ function BookingContent() {
       </motion.div>
 
       {/* ── Section 1: Strictly The 3 Compact Ceremony Cards + Custom Option ── */}
-      <div className="relative z-10 w-full mb-8 sm:mb-10">
+      <div className="relative z-10 w-full mb-6 sm:mb-8">
         <div className="flex items-center justify-between gap-3 mb-3.5 sm:mb-4">
           <div>
             <span className="text-[10px] font-mono uppercase tracking-widest text-primary font-bold block">
@@ -324,14 +348,16 @@ function BookingContent() {
             </h2>
           </div>
 
-          <button
+          <Button
             type="button"
+            variant="outline"
+            size="sm"
             onClick={() => setIsAddingCustom((prev) => !prev)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-primary/30 bg-primary/10 hover:bg-primary/20 text-primary text-xs font-mono font-medium transition-all cursor-pointer shadow-2xs active:scale-95"
+            className="rounded-full border-primary/30 bg-primary/10 hover:bg-primary/20 text-primary text-xs font-mono font-medium transition-all cursor-pointer shadow-2xs active:scale-95 h-auto py-1.5 px-3"
           >
             <Plus className="size-3" />
             <span>{isAddingCustom ? "Close" : "Custom Occasion"}</span>
-          </button>
+          </Button>
         </div>
 
         {/* Inline Custom Ceremony Input */}
@@ -345,7 +371,7 @@ function BookingContent() {
               className="mb-4 p-3.5 rounded-2xl border border-primary/30 bg-card/85 backdrop-blur-xl shadow-xs overflow-hidden"
             >
               <div className="flex flex-col sm:flex-row sm:items-center gap-2.5">
-                <input
+                <Input
                   type="text"
                   value={customInputText}
                   onChange={(e) => setCustomInputText(e.target.value)}
@@ -356,27 +382,30 @@ function BookingContent() {
                     }
                   }}
                   placeholder="Enter custom occasion name (e.g. Sangeet Celebration, Ring Ceremony)..."
-                  className="flex-1 rounded-xl bg-background/80 border border-border/70 px-3.5 py-2 text-xs sm:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/40 focus:border-primary transition-all"
+                  className="flex-1 rounded-xl bg-background/80 border-border/70 px-3.5 py-2 text-xs sm:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary transition-all h-auto"
                 />
                 <div className="flex items-center gap-2 shrink-0">
-                  <button
+                  <Button
                     type="button"
+                    size="sm"
                     onClick={handleAddCustomSubmit}
                     disabled={!customInputText.trim()}
-                    className="px-4 py-2 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold uppercase tracking-wider transition-all cursor-pointer disabled:opacity-50 shadow-xs"
+                    className="px-4 py-2 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold uppercase tracking-wider transition-all cursor-pointer disabled:opacity-50 shadow-xs h-auto"
                   >
                     Select Custom
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     type="button"
+                    variant="outline"
+                    size="sm"
                     onClick={() => {
                       setIsAddingCustom(false);
                       setCustomInputText("");
                     }}
-                    className="px-3 py-2 rounded-full border border-border/70 hover:bg-muted text-xs font-mono text-muted-foreground transition-all cursor-pointer"
+                    className="px-3 py-2 rounded-full border border-border/70 hover:bg-muted text-xs font-mono text-muted-foreground transition-all cursor-pointer h-auto"
                   >
                     Cancel
-                  </button>
+                  </Button>
                 </div>
               </div>
             </motion.div>
@@ -455,11 +484,14 @@ function BookingContent() {
                 }`}
               >
                 <div>
-                  {/* Top line: Num tag + Radio indicator */}
+                  {/* Top line: Num tag Badge + Radio indicator */}
                   <div className="flex items-center justify-between text-[10px] font-mono tracking-wider uppercase text-muted-foreground mb-2">
-                    <span className="font-bold text-primary">
+                    <Badge
+                      variant="outline"
+                      className="font-bold text-primary border-primary/20 bg-primary/10 text-[10px] font-mono tracking-wider uppercase py-0.5 px-2"
+                    >
                       #{ceremony.num} {ceremony.badge}
-                    </span>
+                    </Badge>
                     <div
                       className={`size-4 rounded-full border flex items-center justify-center transition-all ${
                         isSelected
@@ -499,6 +531,8 @@ function BookingContent() {
         </div>
       </div>
 
+      <Separator className="my-6 sm:my-8 bg-border/40" />
+
       {/* ── Section 2: Quotation Request Form Suite ── */}
       <div className="relative z-10 w-full rounded-3xl border border-border/70 bg-card/85 backdrop-blur-xl p-5 sm:p-8 lg:p-10 shadow-xs">
         {/* Form Suite Header */}
@@ -517,10 +551,13 @@ function BookingContent() {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-mono font-semibold">
+            <Badge
+              variant="outline"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-mono font-semibold"
+            >
               <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
               West Bengal Autumn &amp; Winter 2026 Dates Open
-            </span>
+            </Badge>
           </div>
         </div>
 
@@ -537,13 +574,14 @@ function BookingContent() {
                 : found?.title || "Bridal / Normal Mehendi";
 
               return (
-                <span
+                <Badge
                   key={id}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-mono font-semibold"
+                  variant="outline"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border-primary/20 text-primary text-xs font-mono font-semibold"
                 >
                   <Check className="size-3" />
                   <span>{label}</span>
-                </span>
+                </Badge>
               );
             })}
           </div>
@@ -559,18 +597,18 @@ function BookingContent() {
             <div className="lg:col-span-7 space-y-4 sm:space-y-5">
               {/* Email Address */}
               <div>
-                <label
+                <Label
                   htmlFor="bookingEmail"
                   className="block text-[11px] font-mono uppercase tracking-wider text-muted-foreground font-semibold mb-1"
                 >
                   EMAIL ADDRESS *
-                </label>
-                <input
+                </Label>
+                <Input
                   id="bookingEmail"
                   type="email"
                   placeholder="bride@email.com"
                   {...register("email")}
-                  className="w-full rounded-xl bg-background/70 border border-border/70 px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/40 focus:border-primary transition-all shadow-2xs"
+                  className="w-full rounded-xl bg-background/70 border-border/70 px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary transition-all shadow-2xs h-auto"
                 />
                 {errors.email && (
                   <span className="text-[11px] text-destructive mt-1 block">
@@ -582,18 +620,18 @@ function BookingContent() {
               {/* First Name * & Last Name * */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label
+                  <Label
                     htmlFor="bookingFirstName"
                     className="block text-[11px] font-mono uppercase tracking-wider text-muted-foreground font-semibold mb-1"
                   >
                     FIRST NAME *
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     id="bookingFirstName"
                     type="text"
                     placeholder="Debolina"
                     {...register("firstName")}
-                    className="w-full rounded-xl bg-background/70 border border-border/70 px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/40 focus:border-primary transition-all shadow-2xs"
+                    className="w-full rounded-xl bg-background/70 border-border/70 px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary transition-all shadow-2xs h-auto"
                   />
                   {errors.firstName && (
                     <span className="text-[11px] text-destructive mt-1 block">
@@ -603,18 +641,18 @@ function BookingContent() {
                 </div>
 
                 <div>
-                  <label
+                  <Label
                     htmlFor="bookingLastName"
                     className="block text-[11px] font-mono uppercase tracking-wider text-muted-foreground font-semibold mb-1"
                   >
                     LAST NAME *
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     id="bookingLastName"
                     type="text"
                     placeholder="Banerjee"
                     {...register("lastName")}
-                    className="w-full rounded-xl bg-background/70 border border-border/70 px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/40 focus:border-primary transition-all shadow-2xs"
+                    className="w-full rounded-xl bg-background/70 border-border/70 px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary transition-all shadow-2xs h-auto"
                   />
                   {errors.lastName && (
                     <span className="text-[11px] text-destructive mt-1 block">
@@ -626,18 +664,18 @@ function BookingContent() {
 
               {/* Phone / WhatsApp Number */}
               <div>
-                <label
+                <Label
                   htmlFor="bookingPhone"
                   className="block text-[11px] font-mono uppercase tracking-wider text-muted-foreground font-semibold mb-1"
                 >
                   WHATSAPP CONTACT NUMBER *
-                </label>
-                <input
+                </Label>
+                <Input
                   id="bookingPhone"
                   type="tel"
                   placeholder="+91 98300 00000"
                   {...register("phone")}
-                  className="w-full rounded-xl bg-background/70 border border-border/70 px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-mono text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/40 focus:border-primary transition-all shadow-2xs"
+                  className="w-full rounded-xl bg-background/70 border-border/70 px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-mono text-foreground placeholder:text-muted-foreground/50 focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary transition-all shadow-2xs h-auto"
                 />
                 <span className="text-[11px] text-muted-foreground/80 font-sans mt-1 block">
                   Your personalized quotation will be sent directly via
@@ -653,23 +691,41 @@ function BookingContent() {
               {/* West Bengal District / City & Venue Address */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label
+                  <Label
                     htmlFor="bookingCity"
                     className="block text-[11px] font-mono uppercase tracking-wider text-muted-foreground font-semibold mb-1"
                   >
                     WEST BENGAL DISTRICT *
-                  </label>
-                  <select
-                    id="bookingCity"
-                    {...register("city")}
-                    className="w-full rounded-xl bg-background/70 border border-border/70 px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-sans text-foreground focus:outline-none focus:ring-1 focus:ring-primary/40 focus:border-primary transition-all shadow-2xs"
+                  </Label>
+                  <Select
+                    value={watch("city") || "Kolkata"}
+                    onValueChange={(val) => {
+                      if (val) setValue("city", val, { shouldValidate: true });
+                    }}
                   >
-                    {BENGAL_DISTRICTS.map((dist) => (
-                      <option key={dist} value={dist}>
-                        {dist}
-                      </option>
-                    ))}
-                  </select>
+                    <SelectTrigger
+                      id="bookingCity"
+                      className="w-full justify-between rounded-xl bg-background/70 border-border/70 px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-sans text-foreground shadow-2xs h-auto cursor-pointer"
+                    >
+                      <SelectValue placeholder="Select district..." />
+                    </SelectTrigger>
+                    <SelectContent
+                      side="bottom"
+                      align="start"
+                      sideOffset={4}
+                      className="max-h-60 rounded-xl border border-border/60 bg-card/95 backdrop-blur-2xl p-1 shadow-2xl text-foreground z-50 transform-gpu"
+                    >
+                      {BENGAL_DISTRICTS.map((dist) => (
+                        <SelectItem
+                          key={dist}
+                          value={dist}
+                          className="rounded-lg px-3 py-2 text-xs sm:text-sm cursor-pointer transition-colors duration-150 focus:bg-primary/10 focus:text-primary data-checked:bg-primary/10 data-checked:text-primary"
+                        >
+                          {dist}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   {errors.city && (
                     <span className="text-[11px] text-destructive mt-1 block">
                       {errors.city.message}
@@ -678,18 +734,18 @@ function BookingContent() {
                 </div>
 
                 <div>
-                  <label
+                  <Label
                     htmlFor="bookingLocation"
                     className="block text-[11px] font-mono uppercase tracking-wider text-muted-foreground font-semibold mb-1"
                   >
                     VENUE / HOTEL / RESIDENCE *
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     id="bookingLocation"
                     type="text"
                     placeholder="e.g. ITC Sonar / Hyatt Regency / Home"
                     {...register("location")}
-                    className="w-full rounded-xl bg-background/70 border border-border/70 px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/40 focus:border-primary transition-all shadow-2xs"
+                    className="w-full rounded-xl bg-background/70 border-border/70 px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary transition-all shadow-2xs h-auto"
                   />
                   {errors.location && (
                     <span className="text-[11px] text-destructive mt-1 block">
@@ -824,29 +880,27 @@ function BookingContent() {
 
               {/* Additional Requirements */}
               <div>
-                <label
+                <Label
                   htmlFor="bookingRequirements"
                   className="block text-[11px] font-mono uppercase tracking-wider text-muted-foreground font-semibold mb-1"
                 >
                   ADDITIONAL MOTIF OR TIMING REQUIREMENTS (OPTIONAL)
-                </label>
-                <textarea
+                </Label>
+                <Textarea
                   id="bookingRequirements"
                   rows={2}
                   placeholder="Bride & groom initials to conceal, family heirloom motifs, ceremony timing..."
                   {...register("requirements")}
-                  className="w-full rounded-xl bg-background/70 border border-border/70 px-4 py-2.5 text-xs sm:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/40 focus:border-primary transition-all resize-none shadow-2xs"
+                  className="w-full rounded-xl bg-background/70 border-border/70 px-4 py-2.5 text-xs sm:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:border-primary transition-all resize-none shadow-2xs min-h-20"
                 />
               </div>
 
               {/* Submit CTA */}
               <div className="pt-1">
-                <motion.button
+                <Button
                   type="submit"
                   disabled={isSubmitting}
-                  whileHover={{ scale: 1.015 }}
-                  whileTap={{ scale: 0.985 }}
-                  className="w-full rounded-full border border-primary/30 bg-primary hover:bg-primary/90 text-primary-foreground py-3 sm:py-3.5 px-8 font-bold uppercase tracking-wider text-xs sm:text-sm shadow-[0_10px_30px_-5px_rgba(139,58,43,0.35)] backdrop-blur-xl transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="w-full rounded-full border border-primary/30 bg-primary hover:bg-primary/90 text-primary-foreground py-3 sm:py-3.5 px-8 font-bold uppercase tracking-wider text-xs sm:text-sm shadow-[0_10px_30px_-5px_rgba(139,58,43,0.35)] backdrop-blur-xl transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 h-auto"
                 >
                   {isSubmitting ? (
                     <span>Preparing Quotation...</span>
@@ -856,7 +910,7 @@ function BookingContent() {
                       <Sparkles className="size-4" />
                     </>
                   )}
-                </motion.button>
+                </Button>
               </div>
             </div>
 
@@ -1041,13 +1095,14 @@ function BookingContent() {
                   <MessageCircle className="size-4" />
                   <span>Confirm on WhatsApp</span>
                 </a>
-                <button
+                <Button
                   type="button"
+                  variant="outline"
                   onClick={() => setConfirmedBooking(null)}
-                  className="px-5 py-3 rounded-full border border-border/70 hover:bg-muted text-xs font-mono uppercase tracking-wider text-muted-foreground hover:text-foreground transition-all cursor-pointer"
+                  className="px-5 py-3 rounded-full border border-border/70 hover:bg-muted text-xs font-mono uppercase tracking-wider text-muted-foreground hover:text-foreground transition-all cursor-pointer h-auto"
                 >
                   Close
-                </button>
+                </Button>
               </div>
             </motion.div>
           </motion.div>

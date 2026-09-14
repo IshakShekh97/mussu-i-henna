@@ -74,3 +74,28 @@ export const checkoutSchema = z.object({
 });
 
 export type CheckoutValues = z.infer<typeof checkoutSchema>;
+
+export const registrationSchema = z.object({
+  fullName: z
+    .string()
+    .min(2, "Full name must be at least 2 characters")
+    .max(70, "Full name is too long"),
+  email: z
+    .string()
+    .min(1, "Email is required")
+    .email("Please enter a valid email address"),
+  phone: z
+    .string()
+    .min(10, "Please enter a valid WhatsApp contact number")
+    .max(15, "Phone number is too long"),
+  city: z.string().min(2, "City is required"),
+  program: z.string().min(1, "Please select a masterclass program"),
+  cohort: z.string().min(1, "Please select a cohort batch"),
+  experienceLevel: z.enum(["beginner", "intermediate", "professional"], {
+    message: "Please choose your experience level",
+  }),
+  includeKit: z.boolean(),
+  notes: z.string().max(400, "Notes cannot exceed 400 characters").optional(),
+});
+
+export type RegistrationValues = z.infer<typeof registrationSchema>;

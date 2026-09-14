@@ -1,8 +1,11 @@
 "use client";
 
-import { ArrowRight, Star } from "lucide-react";
+import { ArrowRight, Star, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import type { Product } from "@/data/products";
 
 interface QuickViewModalProps {
@@ -39,24 +42,27 @@ export default function QuickViewModal({
             className="relative w-full max-w-lg rounded-[2.5rem] bg-card/95 border border-border/60 p-6 sm:p-8 shadow-2xl backdrop-blur-2xl flex flex-col"
           >
             {/* Modal Close Button */}
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-sm"
               onClick={onClose}
               aria-label="Close dialog"
-              className="absolute top-5 right-5 size-9 rounded-full bg-black/5 flex items-center justify-center text-foreground/70 hover:text-foreground hover:scale-105 transition-all cursor-pointer"
+              className="absolute top-5 right-5 rounded-full bg-muted/40 hover:bg-muted text-foreground/70 hover:text-foreground cursor-pointer"
             >
-              ✕
-            </button>
+              <X className="size-4" />
+            </Button>
 
             {/* Badges */}
             <div className="flex items-center gap-2 mb-4">
               {product.badges.map((b) => (
-                <span
+                <Badge
                   key={b}
-                  className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold"
+                  variant="outline"
+                  className="rounded-full bg-primary/10 border-primary/20 text-primary text-xs font-semibold px-3 py-1"
                 >
                   {b}
-                </span>
+                </Badge>
               ))}
             </div>
 
@@ -90,23 +96,26 @@ export default function QuickViewModal({
               </p>
             </div>
 
+            <Separator className="mt-6 mb-4 bg-border/50" />
+
             {/* Modal Bottom Action */}
-            <div className="flex items-center justify-between mt-6 pt-4 border-t border-border/50">
+            <div className="flex items-center justify-between">
               <span className="text-3xl font-black text-foreground">
                 {product.price}
               </span>
 
-              <button
+              <Button
                 type="button"
+                size="lg"
                 onClick={() => {
                   onAddToCart(product);
                   onClose();
                 }}
-                className="inline-flex items-center gap-2 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 text-sm font-semibold shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                className="inline-flex items-center gap-2 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 text-sm font-semibold shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer h-auto"
               >
                 <span>Add to Bag</span>
                 <ArrowRight className="size-4" />
-              </button>
+              </Button>
             </div>
           </motion.div>
         </div>

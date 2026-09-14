@@ -11,6 +11,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
+import { Badge } from "@/components/ui/badge";
 
 function MagneticCTA({
   href,
@@ -214,9 +215,12 @@ export default function Hero() {
 
               {/* Bottom tag */}
               <div className="pt-0.5 sm:pt-1 flex items-center">
-                <span className="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded-full text-[8px] sm:text-[10px] font-mono bg-primary/10 text-primary border border-primary/20">
+                <Badge
+                  variant="outline"
+                  className="px-1.5 sm:px-2 py-0.5 rounded-full text-[8px] sm:text-[10px] font-mono bg-primary/10 text-primary border-primary/20"
+                >
                   100% Organic
-                </span>
+                </Badge>
               </div>
             </motion.div>
           </motion.div>
@@ -268,9 +272,12 @@ export default function Hero() {
 
               {/* Bottom tag */}
               <div className="pt-0.5 sm:pt-1 flex items-center">
-                <span className="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded-full text-[8px] sm:text-[10px] font-mono bg-muted/60 text-muted-foreground border border-border/50">
+                <Badge
+                  variant="outline"
+                  className="px-1.5 sm:px-2 py-0.5 rounded-full text-[8px] sm:text-[10px] font-mono bg-muted/60 text-muted-foreground border-border/50"
+                >
                   Guaranteed
-                </span>
+                </Badge>
               </div>
             </motion.div>
           </motion.div>

@@ -17,6 +17,9 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { type TrackOrderValues, trackOrderSchema } from "@/lib/schemas";
 
 interface Milestone {
@@ -328,24 +331,22 @@ export default function TrackOrderPage() {
             className="flex flex-col sm:flex-row gap-2.5"
           >
             <div className="relative flex-1">
-              <Search className="size-4 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <input
+              <Search className="pointer-events-none size-4 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground z-10" />
+              <Input
                 type="text"
                 placeholder="Enter Order ID (e.g. MH-2026-01)"
                 {...register("query")}
-                className="w-full pl-11 pr-4 py-3 rounded-full bg-card border border-border/70 text-xs sm:text-sm font-mono text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all shadow-xs"
+                className="w-full pl-11 pr-4 py-3 h-12 rounded-full bg-card border-border/70 text-xs sm:text-sm font-mono text-foreground placeholder:text-muted-foreground/60 focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:border-primary transition-all shadow-xs"
               />
             </div>
-            <motion.button
+            <Button
               type="submit"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
               disabled={isSubmitting}
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-7 py-3 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer shadow-xs disabled:opacity-50"
+              className="h-12 rounded-full px-7 text-xs sm:text-sm font-bold uppercase tracking-wider gap-2 shadow-xs cursor-pointer"
             >
               <span>{isSubmitting ? "Searching..." : "Track Status"}</span>
               <ArrowRight className="size-4" />
-            </motion.button>
+            </Button>
           </form>
           {errors.query && (
             <span className="text-[11px] text-destructive font-mono mt-1.5 ml-4 block">
@@ -357,20 +358,20 @@ export default function TrackOrderPage() {
           <div className="flex flex-wrap items-center gap-2 mt-4 text-xs font-mono text-muted-foreground">
             <span>Try sample orders:</span>
             {Object.keys(MOCK_ORDERS).map((id) => (
-              <motion.button
+              <Button
                 key={id}
                 type="button"
-                whileHover={{ scale: 1.06 }}
-                whileTap={{ scale: 0.94 }}
+                variant="outline"
+                size="xs"
                 onClick={() => handleQuickSelect(id)}
-                className={`px-3 py-1 rounded-full border transition-all cursor-pointer ${
+                className={`rounded-full px-3 text-xs font-mono transition-all cursor-pointer ${
                   activeOrder?.orderId === id
                     ? "border-primary bg-primary/10 text-primary font-bold shadow-xs"
                     : "border-border/60 bg-muted/30 hover:bg-muted text-muted-foreground"
                 }`}
               >
                 {id}
-              </motion.button>
+              </Button>
             ))}
           </div>
         </motion.div>
@@ -428,13 +429,16 @@ export default function TrackOrderPage() {
                     Order {activeOrder.orderId}
                   </h2>
                 </div>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-mono font-semibold">
+                <Badge
+                  variant="outline"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-mono font-semibold"
+                >
                   <span className="relative flex size-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                     <span className="relative inline-flex rounded-full size-2 bg-emerald-500" />
                   </span>
                   Active Batch
-                </span>
+                </Badge>
               </div>
 
               {/* Milestones Timeline */}
