@@ -16,6 +16,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { parsePrice } from "@/lib/utils";
 import { useCartStore } from "@/store/useCartStore";
 
 export default function CartDrawer() {
@@ -60,7 +61,7 @@ export default function CartDrawer() {
     `Hello Mussu! I would like to place an order for the following fresh henna creations:\n\n${items
       .map(
         (i) =>
-          `• ${i.quantity}x ${i.product.name} (${i.product.price}) = ₹${(Number(i.product.price.replace(/[^0-9.]/g, "")) || 0) * i.quantity}`,
+          `• ${i.quantity}x ${i.product.name} (${i.product.price}) = ₹${parsePrice(i.product.price) * i.quantity}`,
       )
       .join(
         "\n",
@@ -173,8 +174,7 @@ export default function CartDrawer() {
                   </div>
                 ) : (
                   items.map(({ product, quantity }) => {
-                    const priceNum =
-                      Number(product.price.replace(/[^0-9.]/g, "")) || 0;
+                    const priceNum = parsePrice(product.price);
                     return (
                       <div
                         key={product.id}

@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { Product } from "@/data/products";
+import { parsePrice } from "@/lib/utils";
 
 export interface CartItem {
   product: Product;
@@ -79,9 +80,7 @@ export const useCartStore = create<CartState>()(
 
       subtotal: () => {
         return get().items.reduce((acc, item) => {
-          const priceNum =
-            Number(item.product.price.replace(/[^0-9.]/g, "")) || 0;
-          return acc + priceNum * item.quantity;
+          return acc + parsePrice(item.product.price) * item.quantity;
         }, 0);
       },
     }),

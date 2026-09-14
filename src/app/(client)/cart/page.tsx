@@ -24,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { type CheckoutValues, checkoutSchema } from "@/lib/schemas";
+import { parsePrice } from "@/lib/utils";
 import { useCartStore } from "@/store/useCartStore";
 
 export default function CartPage() {
@@ -86,7 +87,7 @@ export default function CartPage() {
       `Hello Mussu!\n\n*NEW ATELIER ORDER: ${generatedOrderId}*\n\n*Customer Details:*\n• Name: ${data.fullName}\n• Phone: ${data.phone}\n• Email: ${data.email}\n• Address: ${data.address}, ${data.city} - ${data.postalCode}\n\n*Order Items:*\n${items
         .map(
           (i) =>
-            `• ${i.quantity}x ${i.product.name} (${i.product.price}) = ₹${(Number(i.product.price.replace(/[^0-9.]/g, "")) || 0) * i.quantity}`,
+            `• ${i.quantity}x ${i.product.name} (${i.product.price}) = ₹${parsePrice(i.product.price) * i.quantity}`,
         )
         .join(
           "\n",
@@ -228,8 +229,7 @@ export default function CartPage() {
 
               <div className="divide-y divide-border/40">
                 {items.map(({ product, quantity }) => {
-                  const priceNum =
-                    Number(product.price.replace(/[^0-9.]/g, "")) || 0;
+                  const priceNum = parsePrice(product.price);
                   return (
                     <div
                       key={product.id}
