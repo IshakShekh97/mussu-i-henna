@@ -1,16 +1,72 @@
 "use client";
 
-import { ArrowUpRight, Sparkles, Star } from "lucide-react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { ArrowUpRight, Eye, Layers, Sparkles } from "lucide-react";
+import { AnimatePresence, motion, useScroll, useTransform } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
-import { WORKS } from "@/data/works";
+import { useRef, useState } from "react";
+
+interface SignatureWork {
+  id: string;
+  num: string;
+  title: string;
+  category: string;
+  bengali: string;
+  ceremony: string;
+  image: string;
+  detail: string;
+}
+
+const SIGNATURE_WORKS: SignatureWork[] = [
+  {
+    id: "work-1",
+    num: "01",
+    title: "Royal Bengali Flora",
+    category: "Bridal Full Arm Suite",
+    bengali: "রাজকীয় ফুল ও লতা",
+    ceremony: "Bespoke Biye",
+    image: "/works/work-1.webp",
+    detail: "Intricate paisley cuffs with traditional fingertip motifs",
+  },
+  {
+    id: "work-4",
+    num: "02",
+    title: "Shankha-Pola Bridal Vine",
+    category: "Bengali Biye Traditional",
+    bengali: "শাঁখা-পলা ব্রাইডাল লতা",
+    ceremony: "Sacred Vows",
+    image: "/works/work-4.webp",
+    detail: "Hand-drafted heirloom vines tailored to red & white bangles",
+  },
+  {
+    id: "work-3",
+    num: "03",
+    title: "Sunburst Artisan Mandala",
+    category: "Festive Gaye Holud",
+    bengali: "সূর্যমুখ মন্ডলা",
+    ceremony: "Turmeric Soirée",
+    image: "/works/work-3.webp",
+    detail: "Radiant floral centerpiece with organic Nilgiri eucalyptus oils",
+  },
+  {
+    id: "work-6",
+    num: "04",
+    title: "Heirloom Kolka Cuff",
+    category: "Bou Bhat Royal",
+    bengali: "ঐতিহ্যবাহী কোলকা কাফ",
+    ceremony: "Post-Wedding Reception",
+    image: "/works/work-6.webp",
+    detail: "Geometric lace jaali with 48-hour deep mahogany oxidation",
+  },
+];
 
 export default function WorksSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [activeIdx, setActiveIdx] = useState<number>(0);
 
-  // Intro and closing scroll-linked animation matching Hero, Products, and Services
+  const activeWork = SIGNATURE_WORKS[activeIdx] ?? SIGNATURE_WORKS[0];
+
+  // Smooth scroll entrance & exit transformations
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
@@ -18,27 +74,25 @@ export default function WorksSection() {
 
   const sectionOpacity = useTransform(
     scrollYProgress,
-    [0, 0.18, 0.8, 0.98],
+    [0, 0.15, 0.85, 1],
     [0, 1, 1, 0],
   );
   const sectionScale = useTransform(
     scrollYProgress,
-    [0, 0.18, 0.8, 0.98],
-    [0.94, 1, 1, 0.94],
+    [0, 0.15, 0.85, 1],
+    [0.96, 1, 1, 0.96],
   );
   const sectionY = useTransform(
     scrollYProgress,
-    [0, 0.18, 0.8, 0.98],
-    [45, 0, 0, -45],
+    [0, 0.15, 0.85, 1],
+    [30, 0, 0, -30],
   );
-
-  // Curate 4 signature preview works for the clean homepage glimpse
-  const previewWorks = WORKS.slice(0, 4);
 
   return (
     <section
       ref={sectionRef}
-      className="relative w-full py-16 sm:py-24 px-4 sm:px-8 md:px-10 lg:px-12 xl:px-16 2xl:px-20 select-none overflow-hidden bg-background"
+      aria-label="Atelier Works Archive"
+      className="relative w-full py-12 sm:py-16 px-4 sm:px-8 md:px-10 lg:px-12 xl:px-16 2xl:px-20 select-none overflow-hidden"
     >
       <motion.div
         style={{
@@ -48,140 +102,207 @@ export default function WorksSection() {
         }}
         className="relative z-10 w-full origin-center"
       >
-        {/* ── Section Header (Minimal & Bold Matching Other Sections) ── */}
-        <div className="relative z-10 w-full mb-10 sm:mb-14">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div>
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.2 }}
-                transition={{ duration: 0.6 }}
-                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-mono tracking-wider uppercase mb-3"
-              >
-                <Sparkles className="size-3" />
-                <span>{"PORTFOLIO GLIMPSE | 04"}</span>
-              </motion.div>
-
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.2 }}
-                transition={{ duration: 0.65, delay: 0.08 }}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-foreground uppercase"
-              >
-                ATELIER WORKS
-              </motion.h2>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.2 }}
-                transition={{ duration: 0.65, delay: 0.14 }}
-                className="text-sm sm:text-base text-muted-foreground mt-2 max-w-2xl font-sans"
-              >
-                A signature glimpse of bespoke Bengali bridal adornments crafted
-                with 100% triple-sifted organic Sojat paste.
-              </motion.p>
+        {/* ── Section Header Row ── */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-border/50">
+          <div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[11px] font-mono tracking-wider uppercase mb-2">
+              <Sparkles className="size-3" />
+              <span>PORTFOLIO GLIMPSE | 04</span>
             </div>
-
-            {/* Direct Redirect CTA Button to the Artist & Full Works Page */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, amount: 0.2 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex items-center"
-            >
-              <Link
-                href="/about"
-                className="group inline-flex items-center gap-2.5 rounded-full border border-border/70 bg-secondary hover:bg-foreground hover:text-background px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold shadow-xs backdrop-blur-xl transition-all duration-200 cursor-pointer"
-              >
-                <span>Read About Mussu &amp; View All Works</span>
-                <ArrowUpRight className="size-3.5 sm:size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Link>
-            </motion.div>
-          </div>
-        </div>
-
-        {/* ── Plain Background Glimpse Cards (Zero Modals, Zero Flicker) ── */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 w-full">
-          {previewWorks.map((work, index) => (
-            <motion.div
-              key={work.id}
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, amount: 0.15 }}
-              transition={{
-                duration: 0.6,
-                delay: index * 0.08,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className="group relative rounded-2xl sm:rounded-3xl overflow-hidden border border-border/60 bg-muted/20 aspect-3/4 shadow-xs hover:shadow-md transition-all duration-300"
-            >
-              <Image
-                src={work.image}
-                alt={work.title}
-                width={work.width}
-                height={work.height}
-                priority={index < 2}
-                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 25vw"
-                className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-              />
-
-              {/* Minimal Luxury Hover Overlay (Pure Info, No Modal) */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-3.5 sm:p-5 pointer-events-none leading-normal">
-                <div className="flex items-center justify-between">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider bg-black/60 text-white border border-white/20 backdrop-blur-md">
-                    <span className="size-1 rounded-full bg-primary" />
-                    <span>{work.category}</span>
-                  </span>
-                </div>
-
-                <div className="text-white">
-                  <h3 className="font-heading text-sm sm:text-base font-bold tracking-tight text-white drop-shadow-xs line-clamp-1">
-                    {work.title}
-                  </h3>
-                  <p className="text-[11px] sm:text-xs font-sans text-white/80 mt-0.5 drop-shadow-xs">
-                    {work.bengali}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* ── Inspiring Homepage Atelier Banner with Direct Redirect ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.2 }}
-          transition={{ duration: 0.65, delay: 0.25 }}
-          className="w-full mt-10 sm:mt-14 rounded-3xl border border-border/60 bg-muted/15 p-6 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6"
-        >
-          <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
-            <div className="flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-primary mb-1 font-semibold">
-              <Star className="size-3 fill-primary" />
-              <span>THE ARTIST &amp; ATELIER PHILOSOPHY</span>
-            </div>
-            <h3 className="text-xl sm:text-2xl md:text-3xl font-heading font-bold text-foreground tracking-tight">
-              Bespoke Bengali Kolka by Mussu Shekh
-            </h3>
-            <p className="text-xs sm:text-sm text-muted-foreground font-sans mt-1 max-w-xl">
-              Meet the master artist behind the needle-cone, learn about our
-              100% organic Sojat recipe, and experience the full continuous 3D
-              portfolio.
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-foreground uppercase">
+              ATELIER WORKS ARCHIVE
+            </h2>
+            <p className="text-xs sm:text-sm text-muted-foreground font-sans mt-1.5 max-w-xl">
+              A glimpse into 850+ adorned brides, sacred Shankha-Pola motifs,
+              and freehand Bengali Kolka artistry.
             </p>
           </div>
 
           <Link
             href="/about"
-            className="group inline-flex items-center gap-2.5 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 text-xs sm:text-sm font-semibold shadow-md transition-all shrink-0 hover:scale-105 active:scale-95 cursor-pointer"
+            className="group inline-flex items-center gap-2 rounded-full border border-border/70 bg-secondary hover:bg-foreground hover:text-background px-5 py-2.5 text-xs sm:text-sm font-semibold shadow-xs backdrop-blur-xl transition-all duration-200 cursor-pointer self-start sm:self-auto shrink-0"
           >
-            <span>Meet Mussu &amp; View 3D Works</span>
+            <span>Explore All Works &amp; 3D Gallery</span>
             <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
-        </motion.div>
+        </div>
+
+        {/* ── Main Fuller Bento Showcase ── */}
+        <div className="mt-8 rounded-[2rem] sm:rounded-[2.5rem] border border-border/70 bg-card/85 backdrop-blur-xl p-5 sm:p-7 md:p-8 lg:p-10 shadow-xs">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-stretch">
+            {/* ── Left Column: Masterpiece Visual Preview (lg:col-span-6) ── */}
+            <div className="lg:col-span-6 flex flex-col">
+              <div className="relative w-full aspect-[4/5] sm:aspect-[16/11] lg:aspect-[4/5] max-h-[460px] rounded-2xl sm:rounded-3xl overflow-hidden border border-border/60 bg-background/80 shadow-md">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeWork.id}
+                    initial={{ opacity: 0, scale: 1.04 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                    className="relative w-full h-full"
+                  >
+                    <Image
+                      src={activeWork.image}
+                      alt={activeWork.title}
+                      fill
+                      priority
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                      className="object-cover"
+                    />
+
+                    {/* Gradient Overlay for Text Readability */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/10" />
+
+                    {/* Top Floating Glass Badges */}
+                    <div className="absolute top-3.5 inset-x-3.5 flex items-center justify-between pointer-events-none">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-white text-[10px] font-mono tracking-wider uppercase">
+                        <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                        {activeWork.ceremony}
+                      </span>
+                      <span className="px-2.5 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-white/90 text-[10px] font-mono font-semibold">
+                        {activeWork.num} / 04
+                      </span>
+                    </div>
+
+                    {/* Bottom Caption Overlay */}
+                    <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5 text-white pointer-events-none">
+                      <div className="flex items-center gap-2 text-[11px] font-mono tracking-wider text-primary-foreground/90 uppercase mb-1">
+                        <span>{activeWork.category}</span>
+                      </div>
+                      <h3 className="text-lg sm:text-xl font-heading font-black text-white leading-snug">
+                        {activeWork.title}
+                      </h3>
+                      <div className="flex items-center justify-between gap-2 mt-1 pt-2 border-t border-white/20 text-xs">
+                        <span className="font-sans text-white/80">
+                          {activeWork.detail}
+                        </span>
+                        <span className="font-sans text-xs text-white/90 font-medium shrink-0">
+                          {activeWork.bengali}
+                        </span>
+                      </div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
+
+            {/* ── Right Column: Interactive Selection Stack & Full Gallery Portal (lg:col-span-6) ── */}
+            <div className="lg:col-span-6 flex flex-col justify-between gap-5">
+              {/* Interactive Preview Switcher */}
+              <div>
+                <div className="flex items-center justify-between text-xs font-mono uppercase tracking-widest text-muted-foreground mb-3 pb-2 border-b border-border/40">
+                  <span>SELECT SIGNATURE COLLECTION</span>
+                  <span className="text-[11px] text-primary font-bold">
+                    PREVIEW {activeWork.num}
+                  </span>
+                </div>
+
+                <div className="flex flex-col gap-2.5">
+                  {SIGNATURE_WORKS.map((work, idx) => {
+                    const isActive = activeIdx === idx;
+                    return (
+                      <button
+                        key={work.id}
+                        type="button"
+                        onClick={() => setActiveIdx(idx)}
+                        onMouseEnter={() => setActiveIdx(idx)}
+                        className={`relative w-full rounded-2xl p-3.5 sm:p-4 text-left transition-all duration-200 border cursor-pointer flex items-center justify-between gap-3 ${
+                          isActive
+                            ? "border-primary/60 bg-primary/10 shadow-xs"
+                            : "border-border/50 bg-background/50 hover:border-border hover:bg-muted/40"
+                        }`}
+                      >
+                        {isActive && (
+                          <motion.div
+                            layoutId="activeWorkTab"
+                            className="absolute inset-0 rounded-2xl ring-1 ring-primary/40 pointer-events-none"
+                            transition={{
+                              type: "spring",
+                              bounce: 0.2,
+                              duration: 0.35,
+                            }}
+                          />
+                        )}
+
+                        <div className="flex items-center gap-3 sm:gap-4 relative z-10">
+                          <span
+                            className={`font-mono text-xs sm:text-sm font-bold transition-colors ${
+                              isActive
+                                ? "text-primary"
+                                : "text-muted-foreground"
+                            }`}
+                          >
+                            {work.num}
+                          </span>
+                          <div>
+                            <div className="font-heading text-xs sm:text-sm font-bold text-foreground leading-tight">
+                              {work.title}
+                            </div>
+                            <div className="text-[11px] font-sans text-muted-foreground mt-0.5">
+                              {work.category} • {work.bengali}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="relative z-10 flex items-center gap-2 shrink-0">
+                          <span className="hidden sm:inline-block text-[10px] font-mono px-2 py-0.5 rounded-full bg-background/80 border border-border/60 text-muted-foreground uppercase">
+                            {work.ceremony}
+                          </span>
+                          <span
+                            className={`size-2 rounded-full transition-colors ${
+                              isActive ? "bg-primary" : "bg-border"
+                            }`}
+                          />
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* ── Curated Archive Portal Card (Drives User to /about) ── */}
+              <div className="rounded-2xl border border-primary/20 bg-primary/5 p-4 sm:p-5 flex flex-col justify-between gap-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <div className="size-8 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
+                      <Layers className="size-4" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs sm:text-sm font-heading font-bold text-foreground uppercase tracking-wide">
+                        Step Inside The 3D Atelier Gallery
+                      </h4>
+                      <p className="text-[11px] sm:text-xs text-muted-foreground font-sans mt-0.5">
+                        Experience 24+ full ceremonial archives, zoom into
+                        micro-kolka strokes, and witness mahogany stain depth.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-primary/10 flex flex-col sm:flex-row items-center justify-between gap-3">
+                  <div className="flex items-center gap-3 text-[11px] font-mono text-muted-foreground">
+                    <span className="inline-flex items-center gap-1">
+                      <Eye className="size-3 text-primary" /> 24+ Works
+                    </span>
+                    <span>•</span>
+                    <span>3D Exhibition</span>
+                    <span>•</span>
+                    <span>Behind The Craft</span>
+                  </div>
+
+                  <Link
+                    href="/about"
+                    className="w-full sm:w-auto group inline-flex items-center justify-center gap-2 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer shadow-xs active:scale-95"
+                  >
+                    <span>View Full Gallery</span>
+                    <ArrowUpRight className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </motion.div>
     </section>
   );

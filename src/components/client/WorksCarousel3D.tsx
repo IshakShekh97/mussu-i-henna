@@ -265,11 +265,12 @@ export default function WorksCarousel3D() {
                 <Flower2 className="size-5" />
               </div>
               <h4 className="font-heading font-bold text-base sm:text-lg text-foreground tracking-tight">
-                100% Organic Sojat
+                100% Bengal Lawsonia
               </h4>
               <p className="text-xs sm:text-sm text-muted-foreground font-sans mt-1 leading-relaxed">
-                Formulated with triple-sifted Rajasthan leaves and Nilgiri
-                eucalyptus oils for rich 48-hour mahogany stain.
+                Formulated with triple-sifted organic Bengal Lawsonia leaves and
+                steam-distilled Nilgiri eucalyptus oils for rich 48-hour
+                mahogany stain.
               </p>
             </div>
 

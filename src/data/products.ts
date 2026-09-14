@@ -24,14 +24,14 @@ export type CategoryId = (typeof CATEGORIES)[number]["id"];
 export const PRODUCTS: Product[] = [
   {
     id: "organic-cones",
-    name: "Kolkata Sojat Organic Cones",
+    name: "Kolkata Bengal Organic Cones",
     price: "₹18",
     badges: ["Artisan Batch", "100% Organic"],
     category: "cones",
     image: "/products/henna-cones.png",
-    tagline: "Triple-sifted henna paste with pure Nilgiri eucalyptus oil",
+    tagline: "Triple-sifted Bengal Lawsonia with pure Nilgiri eucalyptus oil",
     description:
-      "Handcrafted for Bengali bridal Kolka work using 100% pure organic henna powder, pure eucalyptus oil, and cane sugar syrup for a silky smooth flow and rich mahogany stain that lasts up to 2 weeks.",
+      "Handcrafted for Bengali bridal Kolka work using 100% pure organic Bengal Lawsonia powder, pure eucalyptus oil, and cane sugar syrup for a silky smooth flow and rich mahogany stain that lasts up to 2 weeks.",
     rating: 4.9,
     reviewsCount: 142,
     isFeatured: true,
@@ -127,15 +127,16 @@ export const PRODUCTS: Product[] = [
     isFeatured: false,
   },
   {
-    id: "sojat-reserve-cones",
-    name: "Autumn Harvest Sojat Cones",
+    id: "bengal-reserve-cones",
+    name: "Autumn Harvest Bengal Cones",
     price: "₹22",
     badges: ["Single Origin", "Dark Stain"],
     category: "cones",
     image: "/products/henna-cones.png",
-    tagline: "First flush autumn harvest henna with unmatched dye release",
+    tagline:
+      "First flush autumn harvest Bengal henna with unmatched dye release",
     description:
-      "Single-estate henna paste from the peak November crop yield, offering exceptional elasticity and a deep burgundy dye curve.",
+      "Single-origin Bengal Lawsonia paste from the peak November crop yield, offering exceptional elasticity and a deep burgundy dye curve.",
     rating: 4.8,
     reviewsCount: 37,
     isFeatured: false,

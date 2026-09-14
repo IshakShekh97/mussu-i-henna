@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { FEATURED_PRODUCTS, type Product } from "@/data/products";
+import { useCartStore } from "@/store/useCartStore";
 import CartToast from "./CartToast";
 import ProductCard from "./ProductCard";
 import QuickViewModal from "./QuickViewModal";
@@ -39,6 +40,7 @@ export default function ProductsSection() {
 
   const handleAddToCart = (product: Product, e?: React.MouseEvent) => {
     e?.stopPropagation();
+    useCartStore.getState().addItem(product);
     setToastMessage(`Added "${product.name}" to your bag ✨`);
     setTimeout(() => {
       setToastMessage(null);

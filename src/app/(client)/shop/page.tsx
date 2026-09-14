@@ -8,6 +8,7 @@ import CartToast from "@/components/client/CartToast";
 import ProductCard from "@/components/client/ProductCard";
 import QuickViewModal from "@/components/client/QuickViewModal";
 import { CATEGORIES, PRODUCTS, type Product } from "@/data/products";
+import { useCartStore } from "@/store/useCartStore";
 
 export default function ShopPage() {
   const [activeCategory, setActiveCategory] = useState<string>("all");
@@ -27,6 +28,7 @@ export default function ShopPage() {
 
   const handleAddToCart = (product: Product, e?: React.MouseEvent) => {
     e?.stopPropagation();
+    useCartStore.getState().addItem(product);
     setToastMessage(`Added "${product.name}" to your bag ✨`);
     setTimeout(() => {
       setToastMessage(null);

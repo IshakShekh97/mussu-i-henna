@@ -48,7 +48,7 @@ export const WORKS: WorkItem[] = [
   {
     id: "work-5",
     title: "Botanical Paisley Trails",
-    category: "Organic Sojat",
+    category: "Bengal Lawsonia",
     bengali: "কলকা ও পাতার নকশা",
     image: "/works/work-5.webp",
     width: 896,

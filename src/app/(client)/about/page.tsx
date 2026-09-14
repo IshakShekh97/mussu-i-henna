@@ -6,7 +6,7 @@ import ScrollVelocity from "@/components/ScrollVelocity";
 export const metadata: Metadata = {
   title: "About Mussu // Master Henna Artist & Bengali Bridal Atelier",
   description:
-    "Discover the story of Mussu Shekh, founder and master bridal mehndi artist specializing in bespoke Bengali Kolka, 100% organic Sojat henna paste, and sacred ceremonial adornments.",
+    "Discover the story of Mussu Shekh, founder and master bridal mehndi artist specializing in bespoke Bengali Kolka, 100% organic Bengal Lawsonia paste, and sacred ceremonial adornments.",
 };
 
 export default function AboutPage() {
@@ -17,7 +17,7 @@ export default function AboutPage() {
       {/* ── Ticker: Artisanal Philosophy & Trust Badges ── */}
       <ScrollVelocity
         texts={[
-          "✦ 100% ORGANIC LAWSONIA ✦ PURE SOJAT PASTE ✦ ZERO CHEMICAL PRESERVATIVES ✦ HYPOALLERGENIC FOR ALL BRIDES ✦ 48-HOUR MAHOGANY STAIN",
+          "✦ 100% ORGANIC LAWSONIA ✦ PURE BENGAL LAWSONIA ✦ ZERO CHEMICAL PRESERVATIVES ✦ HYPOALLERGENIC FOR ALL BRIDES ✦ 48-HOUR MAHOGANY STAIN",
         ]}
         velocity={40}
         className="fill-primary text-2xl sm:text-3xl font-heading font-bold tracking-widest uppercase my-8 sm:my-12 text-primary"
@@ -60,10 +60,11 @@ export default function AboutPage() {
             <p>
               Unlike mass-market cones loaded with synthetic chemical dyes and
               toxic PPD, every batch of Mussu Henna is freshly mixed in-house
-              using triple-sifted organic Sojat leaves, steam-distilled Nilgiri
-              eucalyptus oils, and pure cane sugar. This guarantees a safe,
-              soothing application with a rich, natural mahogany stain that
-              deepens over 48 hours and lasts through Bou Bhat celebrations.
+              using triple-sifted organic Bengal Lawsonia leaves,
+              steam-distilled Nilgiri eucalyptus oils, and pure cane sugar. This
+              guarantees a safe, soothing application with a rich, natural
+              mahogany stain that deepens over 48 hours and lasts through Bou
+              Bhat celebrations.
             </p>
 
             {/* Quick Atelier Metric Pillars */}
@@ -81,7 +82,7 @@ export default function AboutPage() {
                   100%
                 </div>
                 <div className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground mt-1">
-                  Organic Sojat
+                  Bengal Lawsonia
                 </div>
               </div>
               <div>

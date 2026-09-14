@@ -7,6 +7,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { useCartStore } from "@/store/useCartStore";
 
 interface NavItem {
   id: string;
@@ -36,8 +37,19 @@ interface NavbarProps {
   onCartClick?: () => void;
 }
 
-export default function Navbar({ cartCount = 0, onCartClick }: NavbarProps) {
+export default function Navbar({ cartCount, onCartClick }: NavbarProps) {
   const pathname = usePathname();
+  const storeCount = useCartStore((state) => state.totalItems());
+  const openCart = useCartStore((state) => state.openCart);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const effectiveCartCount =
+    cartCount !== undefined ? cartCount : mounted ? storeCount : 0;
+  const effectiveCartClick = onCartClick ?? openCart;
 
   const routeActiveTabId =
     NAV_ITEMS.find(
@@ -231,11 +243,11 @@ export default function Navbar({ cartCount = 0, onCartClick }: NavbarProps) {
           {/* Right Island: Cart Button Pill */}
           <motion.button
             type="button"
-            onClick={onCartClick}
+            onClick={effectiveCartClick}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.94 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
-            aria-label={`Shopping cart with ${cartCount} items`}
+            aria-label={`Shopping cart with ${effectiveCartCount} items`}
             className="relative flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-border/70 bg-card/85 text-foreground/80 shadow-[0_2px_12px_rgba(0,0,0,0.04)] backdrop-blur-md transition-colors hover:text-foreground hover:border-border cursor-pointer"
           >
             <ShoppingCart
@@ -245,13 +257,13 @@ export default function Navbar({ cartCount = 0, onCartClick }: NavbarProps) {
 
             {/* Cart Badge */}
             <motion.span
-              key={cartCount}
+              key={effectiveCartCount}
               initial={{ scale: 0.7, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: "spring", stiffness: 500, damping: 25 }}
               className="absolute -top-1 -right-1 flex h-4.5 min-w-4.5 sm:h-5 sm:min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[10px] sm:text-[11px] font-bold text-primary-foreground shadow-xs ring-2 ring-background"
             >
-              {cartCount}
+              {effectiveCartCount}
             </motion.span>
           </motion.button>
 
