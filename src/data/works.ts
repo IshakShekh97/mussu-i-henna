@@ -8,6 +8,60 @@ export interface WorkItem {
   height: number;
 }
 
+export interface SignatureWork {
+  id: string;
+  num: string;
+  title: string;
+  category: string;
+  bengali: string;
+  ceremony: string;
+  image: string;
+  detail: string;
+}
+
+export const SIGNATURE_WORKS: SignatureWork[] = [
+  {
+    id: "work-1",
+    num: "01",
+    title: "Royal Bengali Flora",
+    category: "Bridal Full Arm Suite",
+    bengali: "রাজকীয় ফুল ও লতা",
+    ceremony: "Bespoke Biye",
+    image: "/works/work-1.webp",
+    detail: "Intricate paisley cuffs with traditional fingertip motifs",
+  },
+  {
+    id: "work-4",
+    num: "02",
+    title: "Shankha-Pola Bridal Vine",
+    category: "Bengali Biye Traditional",
+    bengali: "শাঁখা-পলা ব্রাইডাল লতা",
+    ceremony: "Sacred Vows",
+    image: "/works/work-4.webp",
+    detail: "Hand-drafted heirloom vines tailored to red & white bangles",
+  },
+  {
+    id: "work-3",
+    num: "03",
+    title: "Sunburst Artisan Mandala",
+    category: "Festive Gaye Holud",
+    bengali: "সূর্যমুখ মন্ডলা",
+    ceremony: "Turmeric Soirée",
+    image: "/works/work-3.webp",
+    detail: "Radiant floral centerpiece with organic Nilgiri eucalyptus oils",
+  },
+  {
+    id: "work-6",
+    num: "04",
+    title: "Heirloom Kolka Cuff",
+    category: "Bou Bhat Royal",
+    bengali: "ঐতিহ্যবাহী কোলকা কাফ",
+    ceremony: "Post-Wedding Reception",
+    image: "/works/work-6.webp",
+    detail: "Geometric lace jaali with 48-hour deep mahogany oxidation",
+  },
+];
+
 export const WORKS: WorkItem[] = [
   {
     id: "work-1",
