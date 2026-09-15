@@ -13,9 +13,9 @@ import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
-import CartToast from "@/components/client/CartToast";
-import ProductCard from "@/components/client/ProductCard";
-import QuickViewModal from "@/components/client/QuickViewModal";
+import CartToast from "@/components/common/CartToast";
+import ProductCard from "@/components/shop/ProductCard";
+import QuickViewModal from "@/components/shop/QuickViewModal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,8 +28,9 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import { CATEGORIES, PRODUCTS, type Product } from "@/data/products";
-import { useCartStore } from "@/store/useCartStore";
+import { CATEGORIES, PRODUCTS } from "@/data/products";
+import { useProductActions } from "@/hooks/useProductActions";
+import { parsePrice } from "@/lib/utils";
 
 const SORT_OPTIONS = [
   { id: "featured", label: "Featured Collections" },
@@ -60,16 +61,11 @@ function normalizeCategory(param: string | null): string {
   return CATEGORY_ALIASES[clean] || "all";
 }
 
-function parsePrice(priceStr: string): number {
-  return Number.parseFloat(priceStr.replace(/[^0-9.]/g, "")) || 0;
-}
-
 function ShopContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // Read URL search params
   const rawCategory = searchParams.get("category");
   const rawSort = searchParams.get("sort");
   const rawQuery = searchParams.get("q") ?? searchParams.get("search") ?? "";
@@ -85,17 +81,19 @@ function ShopContent() {
     ) as SortOptionId;
   }, [rawSort]);
 
-  // Local state for smooth, unthrottled typing
   const [searchInput, setSearchInput] = useState(rawQuery);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const {
+    toastMessage,
+    selectedProduct,
+    handleAddToCart,
+    openQuickView,
+    closeQuickView,
+  } = useProductActions();
 
-  // Synchronize local search state when URL param changes externally
   useEffect(() => {
     setSearchInput(rawQuery);
   }, [rawQuery]);
 
-  // Helper to cleanly mutate query parameters without scroll reset
   const updateUrlParams = useCallback(
     (updates: {
       category?: string | null;
@@ -136,7 +134,6 @@ function ShopContent() {
     [router, pathname, searchParams],
   );
 
-  // Debounce search input sync to URL (300ms) to avoid spamming history
   useEffect(() => {
     const timer = setTimeout(() => {
       if (searchInput !== rawQuery) {
@@ -146,7 +143,6 @@ function ShopContent() {
     return () => clearTimeout(timer);
   }, [searchInput, rawQuery, updateUrlParams]);
 
-  // Filter and sort items based on searchparams
   const filteredProducts = useMemo(() => {
     const q = searchInput.trim().toLowerCase();
 
@@ -191,22 +187,11 @@ function ShopContent() {
     router.replace(pathname, { scroll: false });
   };
 
-  const handleAddToCart = (product: Product, e?: React.MouseEvent) => {
-    e?.stopPropagation();
-    useCartStore.getState().addItem(product);
-    setToastMessage(`Added "${product.name}" to your bag ✨`);
-    setTimeout(() => {
-      setToastMessage(null);
-    }, 3500);
-  };
-
   return (
     <main className="relative w-full min-h-screen pt-24 pb-20 px-4 sm:px-8 md:px-10 lg:px-12 xl:px-16 2xl:px-20 select-none overflow-hidden">
-      {/* ── Background Subtle Ambient Lights ── */}
       <div className="absolute top-20 left-1/3 -translate-x-1/2 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-96 right-1/4 w-96 h-96 bg-amber-500/8 rounded-full blur-3xl pointer-events-none" />
 
-      {/* ── Back Navigation & Tag ── */}
       <div className="relative z-10 w-full mb-8">
         <Link
           href="/"
@@ -235,7 +220,6 @@ function ShopContent() {
             </p>
           </div>
 
-          {/* Search bar with URL sync and clear button */}
           <div className="relative w-full lg:w-80">
             <Search className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground z-10" />
             <Input
@@ -264,9 +248,7 @@ function ShopContent() {
 
       <Separator className="my-6 bg-border/40" />
 
-      {/* ── Category Filter Pills & Sort Dropdown Row ── */}
       <div className="relative z-10 w-full mb-8 pb-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        {/* Category Pills */}
         <div className="flex flex-wrap items-center gap-2 p-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-border/50 backdrop-blur-xl w-fit">
           {CATEGORIES.map((cat) => {
             const isActive = activeCategory === cat.id;
@@ -298,9 +280,7 @@ function ShopContent() {
           })}
         </div>
 
-        {/* Sort & Reset Actions */}
         <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
-          {/* Active filter count & reset button */}
           {hasActiveFilters && (
             <Button
               type="button"
@@ -314,7 +294,6 @@ function ShopContent() {
             </Button>
           )}
 
-          {/* Shadcn UI Sort Selector */}
           <div className="flex items-center gap-2">
             <Select
               value={activeSort}
@@ -350,7 +329,6 @@ function ShopContent() {
         </div>
       </div>
 
-      {/* ── Results Info Bar ── */}
       <div className="relative z-10 w-full mb-6 flex items-center justify-between text-xs text-muted-foreground font-mono">
         <span>
           SHOWING {filteredProducts.length} OF {PRODUCTS.length} CREATIONS
@@ -365,7 +343,6 @@ function ShopContent() {
         )}
       </div>
 
-      {/* ── Products Grid: All Products, Full Width, Responsive ── */}
       <motion.div
         layout
         className="relative z-10 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-7 lg:gap-8"
@@ -388,14 +365,13 @@ function ShopContent() {
                 product={product}
                 priority={index < 4}
                 onAddToCart={handleAddToCart}
-                onQuickView={(p) => setSelectedProduct(p)}
+                onQuickView={openQuickView}
               />
             </motion.div>
           ))}
         </AnimatePresence>
       </motion.div>
 
-      {/* ── Empty State ── */}
       {filteredProducts.length === 0 && (
         <div className="w-full py-20 flex flex-col items-center justify-center text-center">
           <div className="size-16 rounded-full bg-black/5 flex items-center justify-center mb-4">
@@ -418,10 +394,9 @@ function ShopContent() {
         </div>
       )}
 
-      {/* ── Interactive Quick View Modal & Toast ── */}
       <QuickViewModal
         product={selectedProduct}
-        onClose={() => setSelectedProduct(null)}
+        onClose={closeQuickView}
         onAddToCart={handleAddToCart}
       />
       <CartToast message={toastMessage} />

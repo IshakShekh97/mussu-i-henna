@@ -6,7 +6,7 @@ import {
   Playfair_Display,
 } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/client/Navbar";
+import Navbar from "@/components/layout/Navbar";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { cn } from "@/lib/utils";

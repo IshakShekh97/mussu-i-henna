@@ -1,10 +1,10 @@
-import Hero from "@/components/client/Hero";
-import ProductsSection from "@/components/client/ProductsSection";
-import ServicesSection from "@/components/client/ServicesSection";
-import WorksSection from "@/components/client/WorksSection";
-import ScrollVelocity from "@/components/ScrollVelocity";
+import ScrollVelocity from "@/components/common/ScrollVelocity";
+import Hero from "@/components/home/Hero";
+import ProductsSection from "@/components/home/ProductsSection";
+import ServicesSection from "@/components/home/ServicesSection";
+import WorksSection from "@/components/home/WorksSection";
 
-const HomePage = () => {
+export default function HomePage() {
   return (
     <main className="relative w-full overflow-hidden">
       <Hero />
@@ -39,6 +39,4 @@ const HomePage = () => {
       <WorksSection />
     </main>
   );
-};
-
-export default HomePage;
+}

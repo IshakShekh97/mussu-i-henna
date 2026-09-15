@@ -1,5 +1,5 @@
-import CartDrawer from "@/components/client/CartDrawer";
-import Footer from "@/components/client/Footer";
+import CartDrawer from "@/components/layout/CartDrawer";
+import Footer from "@/components/layout/Footer";
 
 export default function ClientLayout({
   children,

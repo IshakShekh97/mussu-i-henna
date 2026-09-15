@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import ArtistHero from "@/components/client/ArtistHero";
-import WorksCarousel3D from "@/components/client/WorksCarousel3D";
+import ArtistHero from "@/components/about/ArtistHero";
+import WorksCarousel3D from "@/components/about/WorksCarousel3D";
 
 export const metadata: Metadata = {
   title: "About Mussu // Master Henna Artist & Bengali Bridal Atelier",
@@ -11,10 +11,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <main className="relative w-full overflow-hidden">
-      {/* ── Section 1: Artist Hero & Complete Interactive Story ── */}
       <ArtistHero />
-
-      {/* ── Section 2: 3D Curved/Arc Works Carousel ── */}
       <WorksCarousel3D />
     </main>
   );

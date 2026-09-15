@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpRight, Check, Facebook, Instagram, Mail, Send, Sparkles } from "lucide-react";
+import { ArrowUpRight, Check, Mail, Send, Sparkles } from "lucide-react";
 import {
   AnimatePresence,
   motion,
@@ -12,6 +12,42 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
+function InstagramIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+    </svg>
+  );
+}
+
+function FacebookIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+    </svg>
+  );
+}
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -325,7 +361,7 @@ export default function Footer() {
                     transition={{ type: "spring", stiffness: 350, damping: 18 }}
                     className="size-9 rounded-full bg-white/10 hover:bg-primary text-white/80 hover:text-white transition-colors duration-200 flex items-center justify-center backdrop-blur-md cursor-pointer"
                   >
-                    <Instagram className="size-4" />
+                    <InstagramIcon className="size-4" />
                   </motion.a>
                   <motion.a
                     href="https://facebook.com"
@@ -337,7 +373,7 @@ export default function Footer() {
                     transition={{ type: "spring", stiffness: 350, damping: 18 }}
                     className="size-9 rounded-full bg-white/10 hover:bg-primary text-white/80 hover:text-white transition-colors duration-200 flex items-center justify-center backdrop-blur-md cursor-pointer"
                   >
-                    <Facebook className="size-4" />
+                    <FacebookIcon className="size-4" />
                   </motion.a>
                   <motion.a
                     href="mailto:contact@mussuhenna.com"

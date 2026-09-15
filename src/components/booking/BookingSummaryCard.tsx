@@ -1,6 +1,13 @@
 "use client";
 
-import { CheckCircle2, Clock, MapPin, MessageCircle, ShieldCheck, Sparkles } from "lucide-react";
+import {
+  CheckCircle2,
+  Clock,
+  MapPin,
+  MessageCircle,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
@@ -92,7 +99,8 @@ export default function BookingSummaryCard({
           <div className="flex items-start gap-2">
             <MapPin className="size-4 text-primary shrink-0 mt-0.5" />
             <p className="leading-relaxed">
-              Southern Avenue &amp; Salt Lake, Kolkata (Private trials by appointment)
+              Southern Avenue &amp; Salt Lake, Kolkata (Private trials by
+              appointment)
             </p>
           </div>
           <div className="flex items-start gap-2">
@@ -121,7 +129,9 @@ export default function BookingSummaryCard({
           <div className="flex items-start gap-2">
             <CheckCircle2 className="size-3.5 text-primary shrink-0 mt-0.5" />
             <span>
-              <strong className="text-foreground">48-Hour Stain Guarantee:</strong>{" "}
+              <strong className="text-foreground">
+                48-Hour Stain Guarantee:
+              </strong>{" "}
               Vibrant mahogany stain lasting through Biye and Bou Bhat.
             </span>
           </div>

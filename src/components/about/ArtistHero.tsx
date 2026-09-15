@@ -340,12 +340,12 @@ export default function ArtistHero() {
               </Link>
             </Button>
 
-            <a
+            <Link
               href="#atelier-works"
               className="inline-flex items-center text-xs sm:text-sm font-sans font-semibold tracking-wider uppercase text-foreground/80 hover:text-primary underline underline-offset-4 decoration-foreground/30 hover:decoration-primary transition-all cursor-pointer py-2"
             >
               Explore Works ↓
-            </a>
+            </Link>
           </motion.div>
 
           <motion.div

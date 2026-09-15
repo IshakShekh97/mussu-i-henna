@@ -3,7 +3,10 @@ import type { CartItem } from "@/store/useCartStore";
 
 export const WHATSAPP_PHONE = "919830000000";
 
-export function buildWhatsAppUrl(message: string, phone: string = WHATSAPP_PHONE): string {
+export function buildWhatsAppUrl(
+  message: string,
+  phone: string = WHATSAPP_PHONE,
+): string {
   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 }
 

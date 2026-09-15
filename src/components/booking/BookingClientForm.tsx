@@ -1,6 +1,11 @@
 "use client";
 
-import { Controller, type Control, type FieldErrors, type UseFormRegister } from "react-hook-form";
+import {
+  type Control,
+  Controller,
+  type FieldErrors,
+  type UseFormRegister,
+} from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {

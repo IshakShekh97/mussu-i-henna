@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Plus, Sparkles, X } from "lucide-react";
+import { Check, Plus, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -118,27 +118,24 @@ export default function CeremonySelector({
             return (
               <div
                 key={customName}
-                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono transition-all cursor-pointer border ${
+                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono transition-all border ${
                   isSelected
                     ? "bg-primary text-primary-foreground border-primary font-bold shadow-xs"
                     : "bg-background/80 text-foreground border-border/70 hover:border-border"
                 }`}
-                onClick={() => onSelectCeremony(customKey)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    onSelectCeremony(customKey);
-                  }
-                }}
               >
-                <span>{customName}</span>
                 <button
                   type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onRemoveCustom(customName);
-                  }}
+                  onClick={() => onSelectCeremony(customKey)}
+                  className="cursor-pointer"
+                >
+                  {customName}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onRemoveCustom(customName)}
                   aria-label={`Remove ${customName}`}
-                  className="hover:text-destructive transition-colors ml-0.5"
+                  className="hover:text-destructive transition-colors ml-0.5 cursor-pointer"
                 >
                   <X className="size-3" />
                 </button>
